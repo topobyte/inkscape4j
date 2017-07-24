@@ -43,4 +43,25 @@ public class RegularShapes
 		return factory.createPolygon(coordinates);
 	}
 
+	public static Polygon star(int n, double cx, double cy, double radius)
+	{
+		int nPoints = 1 + 2 * n;
+
+		GeometryFactory factory = new GeometryFactory();
+		Coordinate[] coordinates = new Coordinate[nPoints + 1];
+
+		double angle = Math.PI * 2d / nPoints;
+
+		coordinates[0] = coordinates[nPoints] = new Coordinate(cx + radius, cy);
+
+		for (int i = 1; i < nPoints; i++) {
+			int k = (i * 2) % nPoints;
+			double x = cx + radius * Math.cos(angle * k);
+			double y = cy + radius * Math.sin(angle * k);
+			coordinates[i] = new Coordinate(x, y);
+		}
+
+		return factory.createPolygon(coordinates);
+	}
+
 }

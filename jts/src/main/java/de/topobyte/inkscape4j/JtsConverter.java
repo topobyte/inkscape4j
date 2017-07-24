@@ -18,6 +18,7 @@
 package de.topobyte.inkscape4j;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -27,6 +28,26 @@ import de.topobyte.inkscape4j.path.PathBuilder;
 
 public class JtsConverter
 {
+
+	public static Path convert(String id, FillRule fillRule, Geometry geometry)
+	{
+		if (geometry instanceof LineString) {
+			return convert(id, fillRule, (LineString) geometry);
+		} else if (geometry instanceof Polygon) {
+			return convert(id, fillRule, (Polygon) geometry);
+		}
+		return null;
+	}
+
+	public static Path convert(String id, FillRule fillRule,
+			LineString lineString)
+	{
+		PathBuilder pb = new PathBuilder();
+
+		convert(pb, lineString);
+
+		return pb.build(id, fillRule);
+	}
 
 	public static Path convert(String id, FillRule fillRule, Polygon polygon)
 	{

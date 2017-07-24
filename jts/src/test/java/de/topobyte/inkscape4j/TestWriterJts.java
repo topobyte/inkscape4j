@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
 import de.topobyte.chromaticity.ColorCode;
@@ -37,19 +38,29 @@ public class TestWriterJts
 		file.setWidth("500px");
 		file.setHeight("400px");
 
-		Layer layer1 = new Layer("polygons");
+		Layer layer1 = new Layer("geometries");
 		file.getLayers().add(layer1);
-		layer1.setLabel("Polygons");
+		layer1.setLabel("Geometries");
 
 		GeometryFactory factory = new GeometryFactory();
+
 		Polygon polygon = factory.createPolygon(new Coordinate[] {
 				new Coordinate(100, 100), new Coordinate(200, 100),
 				new Coordinate(150, 200), new Coordinate(100, 100) });
 
-		Path path = JtsConverter.convert("polygon1", FillRule.EVEN_ODD,
+		LineString lineString = factory
+				.createLineString(new Coordinate[] { new Coordinate(250, 100),
+						new Coordinate(300, 150), new Coordinate(300, 250) });
+
+		Path path1 = JtsConverter.convert("polygon1", FillRule.EVEN_ODD,
 				polygon);
-		layer1.getObjects().add(path);
-		path.setStyle(style(color(0xff0000), color(0x333333), 1, 1, 1, 2));
+		layer1.getObjects().add(path1);
+		path1.setStyle(style(color(0xff0000), color(0x333333), 1, 1, 1, 2));
+
+		Path path2 = JtsConverter.convert("linestring1", FillRule.EVEN_ODD,
+				lineString);
+		layer1.getObjects().add(path2);
+		path2.setStyle(style(null, color(0x333333), 1, 1, 1, 2));
 
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test-jts.svg");

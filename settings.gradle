@@ -1,3 +1,4 @@
-include 'core', 'writer'
+include 'core', 'jts', 'writer'
 project(':core').name = 'inkscape4j-core'
+project(':jts').name = 'inkscape4j-jts'
 project(':writer').name = 'inkscape4j-writer'

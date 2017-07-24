@@ -1,0 +1,78 @@
+// Copyright 2017 Sebastian Kuerten
+//
+// This file is part of inkscape4j.
+//
+// inkscape4j is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// inkscape4j is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with inkscape4j. If not, see <http://www.gnu.org/licenses/>.
+
+package de.topobyte.inkscape4j;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Polygon;
+
+import de.topobyte.chromaticity.ColorCode;
+import de.topobyte.inkscape4j.path.FillRule;
+import de.topobyte.inkscape4j.path.Path;
+
+public class TestWriterJts
+{
+
+	public static void main(String[] args) throws IOException
+	{
+		SvgFile file = new SvgFile();
+		file.setWidth("500px");
+		file.setHeight("400px");
+
+		Layer layer1 = new Layer("polygons");
+		file.getLayers().add(layer1);
+		layer1.setLabel("Polygons");
+
+		GeometryFactory factory = new GeometryFactory();
+		Polygon polygon = factory.createPolygon(new Coordinate[] {
+				new Coordinate(100, 100), new Coordinate(200, 100),
+				new Coordinate(150, 200), new Coordinate(100, 100) });
+
+		Path path = JtsConverter.convert("polygon1", FillRule.EVEN_ODD,
+				polygon);
+		layer1.getObjects().add(path);
+		path.setStyle(style(color(0xff0000), color(0x333333), 1, 1, 1, 2));
+
+		SvgFileWriting.write(file, System.out);
+		FileOutputStream fos = new FileOutputStream("/tmp/test-jts.svg");
+		SvgFileWriting.write(file, fos);
+		fos.close();
+	}
+
+	private static Style style(ColorCode fill, ColorCode stroke, double opacity,
+			double fillOpacity, double strokeOpacity, double strokeWidth)
+	{
+		Style style = new Style();
+		style.setFill(fill);
+		style.setStroke(stroke);
+		style.setOpacity(opacity);
+		style.setFillOpacity(fillOpacity);
+		style.setStrokeOpacity(strokeOpacity);
+		style.setStrokeWidth(strokeWidth);
+		return style;
+	}
+
+	private static ColorCode color(int rgb)
+	{
+		return new ColorCode(rgb);
+	}
+
+}

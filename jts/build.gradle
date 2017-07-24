@@ -1,0 +1,27 @@
+if (project.hasProperty("topobyte")) {
+    apply from: 'file:///' + System.getProperty("user.home") \
+        + '/.gradle/topobyte.gradle'
+}
+
+dependencies {
+    compile project(':inkscape4j-core')
+    compile 'com.vividsolutions:jts:1.13'
+
+    testCompile project(':inkscape4j-writer')
+}
+
+def pomInfo = new XmlSlurper().parse(new File(projectDir, 'info.pom'));
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                pom.project {
+                    name pomInfo.name
+                    description pomInfo.description
+                    url pomInfo.url
+                }
+            }
+        }
+    }
+}

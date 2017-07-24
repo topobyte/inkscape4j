@@ -30,6 +30,14 @@ public class Circle extends Shape
 		super(id);
 	}
 
+	public Circle(String id, double cx, double cy, double radius)
+	{
+		super(id);
+		this.cx = cx;
+		this.cy = cy;
+		this.radius = radius;
+	}
+
 	public double getCx()
 	{
 		return cx;

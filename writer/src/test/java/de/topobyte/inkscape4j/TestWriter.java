@@ -53,53 +53,30 @@ public class TestWriter
 		file.getLayers().add(layer3);
 		layer3.setLabel("Some paths");
 
-		Rect rect1 = new Rect("rect1");
+		Rect rect1 = new Rect("rect1", 10, 20, 100, 50);
 		layer1.getObjects().add(rect1);
-		rect1.setX(10);
-		rect1.setY(20);
-		rect1.setWidth(100);
-		rect1.setHeight(50);
 
-		Rect rect2 = new Rect("rect2");
+		Rect rect2 = new Rect("rect2", 120, 20, 50, 100);
 		layer1.getObjects().add(rect2);
-		rect2.setX(120);
-		rect2.setY(20);
-		rect2.setWidth(50);
-		rect2.setHeight(100);
 
-		Rect rect3 = new Rect("rect3");
+		Rect rect3 = new Rect("rect3", 180, 20, 50, 50);
 		layer1.getObjects().add(rect3);
-		rect3.setX(180);
-		rect3.setY(20);
-		rect3.setWidth(50);
-		rect3.setHeight(50);
 
-		Rect rect4 = new Rect("rect4");
+		Rect rect4 = new Rect("rect4", 240, 20, 50, 50);
 		layer1.getObjects().add(rect4);
-		rect4.setX(240);
-		rect4.setY(20);
-		rect4.setWidth(50);
-		rect4.setHeight(50);
 
 		rect1.setStyle(style(color(0xffaaaa), color(0x333333), 1, 1, 1, 2));
 		rect2.setStyle(style(color(0xaaaaff), color(0x666666), 1, 1, 1, 2));
 		rect3.setStyle(style(color(0xaaaaff), null, 1, 1, 1, 2));
 		rect4.setStyle(style(null, color(0x000000), 1, 1, 1, 2));
 
-		Circle circle1 = new Circle("circle1");
+		Circle circle1 = new Circle("circle1", 60, 150, 50);
 		layer2.getObjects().add(circle1);
 		circle1.setStyle(style(color(0xaaffaa), color(0x999999), 1, 1, 1, 2));
-		circle1.setCx(60);
-		circle1.setCy(150);
-		circle1.setRadius(50);
 
-		Ellipse ellipse1 = new Ellipse("ellipse1");
+		Ellipse ellipse1 = new Ellipse("ellipse1", 200, 180, 80, 50);
 		layer2.getObjects().add(ellipse1);
 		ellipse1.setStyle(style(color(0xaaffaa), color(0x999999), 1, 1, 1, 2));
-		ellipse1.setCx(200);
-		ellipse1.setCy(180);
-		ellipse1.setRadiusX(80);
-		ellipse1.setRadiusY(50);
 
 		List<PathElement> elements1 = new ArrayList<>();
 		Path path1 = new Path("path1", FillRule.EVEN_ODD, elements1);

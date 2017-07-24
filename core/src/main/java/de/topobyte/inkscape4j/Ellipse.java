@@ -31,6 +31,16 @@ public class Ellipse extends Shape
 		super(id);
 	}
 
+	public Ellipse(String id, double cx, double cy, double radiusX,
+			double radiusY)
+	{
+		super(id);
+		this.cx = cx;
+		this.cy = cy;
+		this.radiusX = radiusX;
+		this.radiusY = radiusY;
+	}
+
 	public double getCx()
 	{
 		return cx;

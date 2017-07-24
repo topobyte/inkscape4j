@@ -35,7 +35,7 @@ public class TestWriter
 
 		Layer layer2 = new Layer("circles");
 		file.getLayers().add(layer2);
-		layer2.setLabel("Circles");
+		layer2.setLabel("Circles / Ellipses");
 
 		Rect rect1 = new Rect("rect1");
 		layer1.getObjects().add(rect1);
@@ -60,6 +60,14 @@ public class TestWriter
 		circle1.setCx(60);
 		circle1.setCy(150);
 		circle1.setRadius(50);
+
+		Ellipse ellipse1 = new Ellipse("ellipse1");
+		layer2.getObjects().add(ellipse1);
+		ellipse1.setStyle(style("#aaffaa", "#999999", 1, 1, 1, 2));
+		ellipse1.setCx(200);
+		ellipse1.setCy(180);
+		ellipse1.setRadiusX(80);
+		ellipse1.setRadiusY(50);
 
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");

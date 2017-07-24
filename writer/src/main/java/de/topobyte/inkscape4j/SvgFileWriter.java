@@ -78,6 +78,8 @@ class SvgFileWriter
 			writeRect((Rect) object);
 		} else if (object instanceof Circle) {
 			writeCircle((Circle) object);
+		} else if (object instanceof Ellipse) {
+			writeEllipse((Ellipse) object);
 		}
 	}
 
@@ -103,6 +105,19 @@ class SvgFileWriter
 		writer.println(String.format("       cx=\"%f\"", circle.getCx()));
 		writer.println(String.format("       cy=\"%f\"", circle.getCy()));
 		writer.println(String.format("       r=\"%f\"", circle.getRadius()));
+		writer.println("    />");
+	}
+
+	private void writeEllipse(Ellipse ellipse)
+	{
+		writer.println("    <ellipse");
+		writer.println(String.format("       style=\"%s\"",
+				style(ellipse.getStyle())));
+		writer.println(String.format("       id=\"%s\"", ellipse.getId()));
+		writer.println(String.format("       cx=\"%f\"", ellipse.getCx()));
+		writer.println(String.format("       cy=\"%f\"", ellipse.getCy()));
+		writer.println(String.format("       rx=\"%f\"", ellipse.getRadiusX()));
+		writer.println(String.format("       ry=\"%f\"", ellipse.getRadiusY()));
 		writer.println("    />");
 	}
 

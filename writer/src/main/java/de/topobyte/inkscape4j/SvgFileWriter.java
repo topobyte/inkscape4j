@@ -155,6 +155,9 @@ class SvgFileWriter
 
 	private String color(ColorCode color)
 	{
+		if (color == null) {
+			return "none";
+		}
 		return String.format("#%06x", color.getValue() & 0xFFFFFF);
 	}
 

@@ -67,19 +67,35 @@ public class TestWriter
 		rect2.setWidth(50);
 		rect2.setHeight(100);
 
-		rect1.setStyle(style(0xffaaaa, 0x333333, 1, 1, 1, 2));
-		rect2.setStyle(style(0xaaaaff, 0x666666, 1, 1, 1, 2));
+		Rect rect3 = new Rect("rect3");
+		layer1.getObjects().add(rect3);
+		rect3.setX(180);
+		rect3.setY(20);
+		rect3.setWidth(50);
+		rect3.setHeight(50);
+
+		Rect rect4 = new Rect("rect4");
+		layer1.getObjects().add(rect4);
+		rect4.setX(240);
+		rect4.setY(20);
+		rect4.setWidth(50);
+		rect4.setHeight(50);
+
+		rect1.setStyle(style(color(0xffaaaa), color(0x333333), 1, 1, 1, 2));
+		rect2.setStyle(style(color(0xaaaaff), color(0x666666), 1, 1, 1, 2));
+		rect3.setStyle(style(color(0xaaaaff), null, 1, 1, 1, 2));
+		rect4.setStyle(style(null, color(0x000000), 1, 1, 1, 2));
 
 		Circle circle1 = new Circle("circle1");
 		layer2.getObjects().add(circle1);
-		circle1.setStyle(style(0xaaffaa, 0x999999, 1, 1, 1, 2));
+		circle1.setStyle(style(color(0xaaffaa), color(0x999999), 1, 1, 1, 2));
 		circle1.setCx(60);
 		circle1.setCy(150);
 		circle1.setRadius(50);
 
 		Ellipse ellipse1 = new Ellipse("ellipse1");
 		layer2.getObjects().add(ellipse1);
-		ellipse1.setStyle(style(0xaaffaa, 0x999999, 1, 1, 1, 2));
+		ellipse1.setStyle(style(color(0xaaffaa), color(0x999999), 1, 1, 1, 2));
 		ellipse1.setCx(200);
 		ellipse1.setCy(180);
 		ellipse1.setRadiusX(80);
@@ -88,7 +104,7 @@ public class TestWriter
 		List<PathElement> elements1 = new ArrayList<>();
 		Path path1 = new Path("path1", FillRule.EVEN_ODD, elements1);
 		layer3.getObjects().add(path1);
-		path1.setStyle(style(0xffaaaa, 0x000000, 1, 0.6, 1, 2));
+		path1.setStyle(style(color(0xffaaaa), color(0x000000), 1, 0.6, 1, 2));
 
 		elements1.add(new MoveTo(300, 100));
 		elements1.add(new LineTo(200, 150));
@@ -103,17 +119,22 @@ public class TestWriter
 		fos.close();
 	}
 
-	private static Style style(int fill, int stroke, double opacity,
+	private static Style style(ColorCode fill, ColorCode stroke, double opacity,
 			double fillOpacity, double strokeOpacity, double strokeWidth)
 	{
 		Style style = new Style();
-		style.setFill(new ColorCode(fill, false));
-		style.setStroke(new ColorCode(stroke, false));
+		style.setFill(fill);
+		style.setStroke(stroke);
 		style.setOpacity(opacity);
 		style.setFillOpacity(fillOpacity);
 		style.setStrokeOpacity(strokeOpacity);
 		style.setStrokeWidth(strokeWidth);
 		return style;
+	}
+
+	private static ColorCode color(int rgb)
+	{
+		return new ColorCode(rgb);
 	}
 
 }

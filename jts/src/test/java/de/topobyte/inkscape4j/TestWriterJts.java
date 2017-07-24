@@ -17,6 +17,9 @@
 
 package de.topobyte.inkscape4j;
 
+import static de.topobyte.inkscape4j.Styles.color;
+import static de.topobyte.inkscape4j.Styles.style;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -25,7 +28,6 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
-import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;
 
@@ -52,8 +54,7 @@ public class TestWriterJts
 				.createLineString(new Coordinate[] { new Coordinate(250, 100),
 						new Coordinate(300, 150), new Coordinate(300, 250) });
 
-		Path path1 = JtsToPath.convert("polygon1", FillRule.EVEN_ODD,
-				polygon);
+		Path path1 = JtsToPath.convert("polygon1", FillRule.EVEN_ODD, polygon);
 		layer1.getObjects().add(path1);
 		path1.setStyle(style(color(0xff0000), color(0x333333), 1, 1, 1, 2));
 
@@ -66,24 +67,6 @@ public class TestWriterJts
 		FileOutputStream fos = new FileOutputStream("/tmp/test-jts.svg");
 		SvgFileWriting.write(file, fos);
 		fos.close();
-	}
-
-	private static Style style(ColorCode fill, ColorCode stroke, double opacity,
-			double fillOpacity, double strokeOpacity, double strokeWidth)
-	{
-		Style style = new Style();
-		style.setFill(fill);
-		style.setStroke(stroke);
-		style.setOpacity(opacity);
-		style.setFillOpacity(fillOpacity);
-		style.setStrokeOpacity(strokeOpacity);
-		style.setStrokeWidth(strokeWidth);
-		return style;
-	}
-
-	private static ColorCode color(int rgb)
-	{
-		return new ColorCode(rgb);
 	}
 
 }

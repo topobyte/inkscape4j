@@ -17,10 +17,12 @@
 
 package de.topobyte.inkscape4j;
 
+import static de.topobyte.inkscape4j.Styles.color;
+import static de.topobyte.inkscape4j.Styles.style;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathBuilder;
@@ -85,24 +87,6 @@ public class TestWriter
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");
 		SvgFileWriting.write(file, fos);
 		fos.close();
-	}
-
-	private static Style style(ColorCode fill, ColorCode stroke, double opacity,
-			double fillOpacity, double strokeOpacity, double strokeWidth)
-	{
-		Style style = new Style();
-		style.setFill(fill);
-		style.setStroke(stroke);
-		style.setOpacity(opacity);
-		style.setFillOpacity(fillOpacity);
-		style.setStrokeOpacity(strokeOpacity);
-		style.setStrokeWidth(strokeWidth);
-		return style;
-	}
-
-	private static ColorCode color(int rgb)
-	{
-		return new ColorCode(rgb);
 	}
 
 }

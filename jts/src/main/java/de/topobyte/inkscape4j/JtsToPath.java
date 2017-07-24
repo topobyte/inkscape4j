@@ -20,6 +20,7 @@ package de.topobyte.inkscape4j;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 import de.topobyte.inkscape4j.path.FillRule;
@@ -35,6 +36,8 @@ public class JtsToPath
 			return convert(id, fillRule, (LineString) geometry);
 		} else if (geometry instanceof Polygon) {
 			return convert(id, fillRule, (Polygon) geometry);
+		} else if (geometry instanceof MultiPolygon) {
+			return convert(id, fillRule, (MultiPolygon) geometry);
 		}
 		return null;
 	}
@@ -53,6 +56,26 @@ public class JtsToPath
 	{
 		PathBuilder pb = new PathBuilder();
 
+		convert(pb, polygon);
+
+		return pb.build(id, fillRule);
+	}
+
+	public static Path convert(String id, FillRule fillRule,
+			MultiPolygon polygon)
+	{
+		PathBuilder pb = new PathBuilder();
+
+		for (int i = 0; i < polygon.getNumGeometries(); i++) {
+			Polygon part = (Polygon) polygon.getGeometryN(i);
+			convert(pb, part);
+		}
+
+		return pb.build(id, fillRule);
+	}
+
+	private static void convert(PathBuilder pb, Polygon polygon)
+	{
 		LineString exterior = polygon.getExteriorRing();
 		convert(pb, exterior);
 
@@ -60,8 +83,6 @@ public class JtsToPath
 			LineString inner = polygon.getInteriorRingN(i);
 			convert(pb, inner);
 		}
-
-		return pb.build(id, fillRule);
 	}
 
 	private static void convert(PathBuilder pb, LineString ls)

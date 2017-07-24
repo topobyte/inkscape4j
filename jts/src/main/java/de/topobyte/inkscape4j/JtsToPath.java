@@ -26,7 +26,7 @@ import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathBuilder;
 
-public class JtsConverter
+public class JtsToPath
 {
 
 	public static Path convert(String id, FillRule fillRule, Geometry geometry)

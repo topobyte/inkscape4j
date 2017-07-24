@@ -52,12 +52,12 @@ public class TestWriterJts
 				.createLineString(new Coordinate[] { new Coordinate(250, 100),
 						new Coordinate(300, 150), new Coordinate(300, 250) });
 
-		Path path1 = JtsConverter.convert("polygon1", FillRule.EVEN_ODD,
+		Path path1 = JtsToPath.convert("polygon1", FillRule.EVEN_ODD,
 				polygon);
 		layer1.getObjects().add(path1);
 		path1.setStyle(style(color(0xff0000), color(0x333333), 1, 1, 1, 2));
 
-		Path path2 = JtsConverter.convert("linestring1", FillRule.EVEN_ODD,
+		Path path2 = JtsToPath.convert("linestring1", FillRule.EVEN_ODD,
 				lineString);
 		layer1.getObjects().add(path2);
 		path2.setStyle(style(null, color(0x333333), 1, 1, 1, 2));

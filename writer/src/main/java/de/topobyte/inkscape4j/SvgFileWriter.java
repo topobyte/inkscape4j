@@ -20,6 +20,13 @@ package de.topobyte.inkscape4j;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import de.topobyte.inkscape4j.path.CubicTo;
+import de.topobyte.inkscape4j.path.LineTo;
+import de.topobyte.inkscape4j.path.MoveTo;
+import de.topobyte.inkscape4j.path.Path;
+import de.topobyte.inkscape4j.path.PathElement;
+import de.topobyte.inkscape4j.path.QuadTo;
+
 class SvgFileWriter
 {
 
@@ -80,6 +87,8 @@ class SvgFileWriter
 			writeCircle((Circle) object);
 		} else if (object instanceof Ellipse) {
 			writeEllipse((Ellipse) object);
+		} else if (object instanceof Path) {
+			writePath((Path) object);
 		}
 	}
 
@@ -121,6 +130,16 @@ class SvgFileWriter
 		writer.println("    />");
 	}
 
+	private void writePath(Path path)
+	{
+		writer.println("    <path");
+		writer.println(
+				String.format("       style=\"%s\"", style(path.getStyle())));
+		writer.println(String.format("       id=\"%s\"", path.getId()));
+		writer.println(String.format("       d=\"%s\"", path(path)));
+		writer.println("    />");
+	}
+
 	private String style(Style style)
 	{
 		StringBuilder buffer = new StringBuilder();
@@ -145,6 +164,45 @@ class SvgFileWriter
 		buffer.append(name);
 		buffer.append(":");
 		buffer.append(Double.toString(value));
+	}
+
+	private String path(Path path)
+	{
+		StringBuilder buffer = new StringBuilder();
+		for (int i = 0; i < path.getElements().size(); i++) {
+			PathElement element = path.getElements().get(i);
+			if (i > 0) {
+				buffer.append(" ");
+			}
+			switch (element.getType()) {
+			default:
+			case MOVE:
+				MoveTo move = (MoveTo) element;
+				buffer.append(
+						String.format("M %f,%f", move.getX(), move.getY()));
+				break;
+			case CLOSE:
+				buffer.append("Z");
+				break;
+			case LINE:
+				LineTo line = (LineTo) element;
+				buffer.append(
+						String.format("l %f,%f", line.getX(), line.getY()));
+				break;
+			case QUAD:
+				QuadTo quad = (QuadTo) element;
+				buffer.append(String.format("q %f,%f %f,%f", quad.getCX(),
+						quad.getCY(), quad.getX(), quad.getY()));
+				break;
+			case CUBIC:
+				CubicTo cubic = (CubicTo) element;
+				buffer.append(String.format("c %f,%f %f,%f %f,%f",
+						cubic.getCX1(), cubic.getCY1(), cubic.getCX2(),
+						cubic.getCY2(), cubic.getX(), cubic.getY()));
+				break;
+			}
+		}
+		return buffer.toString();
 	}
 
 }

@@ -19,6 +19,17 @@ package de.topobyte.inkscape4j;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.topobyte.inkscape4j.path.Close;
+import de.topobyte.inkscape4j.path.CubicTo;
+import de.topobyte.inkscape4j.path.FillRule;
+import de.topobyte.inkscape4j.path.LineTo;
+import de.topobyte.inkscape4j.path.MoveTo;
+import de.topobyte.inkscape4j.path.Path;
+import de.topobyte.inkscape4j.path.PathElement;
+import de.topobyte.inkscape4j.path.QuadTo;
 
 public class TestWriter
 {
@@ -36,6 +47,10 @@ public class TestWriter
 		Layer layer2 = new Layer("circles");
 		file.getLayers().add(layer2);
 		layer2.setLabel("Circles / Ellipses");
+
+		Layer layer3 = new Layer("paths");
+		file.getLayers().add(layer3);
+		layer3.setLabel("Some paths");
 
 		Rect rect1 = new Rect("rect1");
 		layer1.getObjects().add(rect1);
@@ -68,6 +83,18 @@ public class TestWriter
 		ellipse1.setCy(180);
 		ellipse1.setRadiusX(80);
 		ellipse1.setRadiusY(50);
+
+		List<PathElement> elements1 = new ArrayList<>();
+		Path path1 = new Path("path1", FillRule.EVEN_ODD, elements1);
+		layer3.getObjects().add(path1);
+		path1.setStyle(style("#ffaaaa", "#000000", 1, 0.6, 1, 2));
+
+		elements1.add(new MoveTo(300, 100));
+		elements1.add(new LineTo(200, 150));
+		elements1.add(new LineTo(-50, 0));
+		elements1.add(new QuadTo(0, 50, -50, 50));
+		elements1.add(new CubicTo(-50, 0, -100, 100, -100, 0));
+		elements1.add(new Close());
 
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");

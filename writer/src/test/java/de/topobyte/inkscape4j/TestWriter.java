@@ -33,6 +33,10 @@ public class TestWriter
 		file.getLayers().add(layer1);
 		layer1.setLabel("Some rectangles");
 
+		Layer layer2 = new Layer("circles");
+		file.getLayers().add(layer2);
+		layer2.setLabel("Circles");
+
 		Rect rect1 = new Rect("rect1");
 		layer1.getObjects().add(rect1);
 		rect1.setX(10);
@@ -49,6 +53,13 @@ public class TestWriter
 
 		rect1.setStyle(style("#ffaaaa", "#333333", 1, 1, 1, 2));
 		rect2.setStyle(style("#aaaaff", "#666666", 1, 1, 1, 2));
+
+		Circle circle1 = new Circle("circle1");
+		layer2.getObjects().add(circle1);
+		circle1.setStyle(style("#aaffaa", "#999999", 1, 1, 1, 2));
+		circle1.setCx(60);
+		circle1.setCy(150);
+		circle1.setRadius(50);
 
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");

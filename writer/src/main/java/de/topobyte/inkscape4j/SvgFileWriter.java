@@ -76,6 +76,8 @@ class SvgFileWriter
 	{
 		if (object instanceof Rect) {
 			writeRect((Rect) object);
+		} else if (object instanceof Circle) {
+			writeCircle((Circle) object);
 		}
 	}
 
@@ -89,6 +91,18 @@ class SvgFileWriter
 		writer.println(String.format("       height=\"%f\"", rect.getHeight()));
 		writer.println(String.format("       x=\"%f\"", rect.getX()));
 		writer.println(String.format("       y=\"%f\"", rect.getY()));
+		writer.println("    />");
+	}
+
+	private void writeCircle(Circle circle)
+	{
+		writer.println("    <circle");
+		writer.println(
+				String.format("       style=\"%s\"", style(circle.getStyle())));
+		writer.println(String.format("       id=\"%s\"", circle.getId()));
+		writer.println(String.format("       cx=\"%f\"", circle.getCx()));
+		writer.println(String.format("       cy=\"%f\"", circle.getCy()));
+		writer.println(String.format("       r=\"%f\"", circle.getRadius()));
 		writer.println("    />");
 	}
 

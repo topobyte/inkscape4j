@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 
 import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.CubicTo;
+import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.LineTo;
 import de.topobyte.inkscape4j.path.MoveTo;
 import de.topobyte.inkscape4j.path.Path;
@@ -140,6 +141,15 @@ class SvgFileWriter
 		writer.println(
 				String.format("       style=\"%s\"", style(path.getStyle())));
 		writer.println(String.format("       id=\"%s\"", path.getId()));
+		FillRule fillRule = path.getFillRule();
+		if (fillRule != null) {
+			if (fillRule == FillRule.NON_ZERO) {
+				// ignore, this is the default value
+			} else if (fillRule == FillRule.EVEN_ODD) {
+				writer.println(String.format("       fill-rule=\"evenodd\"",
+						path.getId()));
+			}
+		}
 		writer.println(String.format("       d=\"%s\"", path(path)));
 		writer.println("    />");
 	}

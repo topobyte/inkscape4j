@@ -40,19 +40,33 @@ public class TestWriter
 		rect1.setWidth(100);
 		rect1.setHeight(50);
 
-		Style style = new Style();
-		style.setFill("#ffaaaa");
-		style.setStroke("#333333");
-		style.setOpacity(1);
-		style.setFillOpacity(1);
-		style.setStrokeOpacity(1);
-		style.setStrokeWidth(2);
-		rect1.setStyle(style);
+		Rect rect2 = new Rect("rect2");
+		layer1.getObjects().add(rect2);
+		rect2.setX(120);
+		rect2.setY(20);
+		rect2.setWidth(50);
+		rect2.setHeight(100);
+
+		rect1.setStyle(style("#ffaaaa", "#333333", 1, 1, 1, 2));
+		rect2.setStyle(style("#aaaaff", "#666666", 1, 1, 1, 2));
 
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");
 		SvgFileWriting.write(file, fos);
 		fos.close();
+	}
+
+	private static Style style(String fill, String stroke, double opacity,
+			double fillOpacity, double strokeOpacity, double strokeWidth)
+	{
+		Style style = new Style();
+		style.setFill(fill);
+		style.setStroke(stroke);
+		style.setOpacity(opacity);
+		style.setFillOpacity(fillOpacity);
+		style.setStrokeOpacity(strokeOpacity);
+		style.setStrokeWidth(strokeWidth);
+		return style;
 	}
 
 }

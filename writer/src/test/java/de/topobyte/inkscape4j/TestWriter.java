@@ -19,18 +19,11 @@ package de.topobyte.inkscape4j;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.topobyte.chromaticity.ColorCode;
-import de.topobyte.inkscape4j.path.Close;
-import de.topobyte.inkscape4j.path.CubicTo;
 import de.topobyte.inkscape4j.path.FillRule;
-import de.topobyte.inkscape4j.path.LineTo;
-import de.topobyte.inkscape4j.path.MoveTo;
 import de.topobyte.inkscape4j.path.Path;
-import de.topobyte.inkscape4j.path.PathElement;
-import de.topobyte.inkscape4j.path.QuadTo;
+import de.topobyte.inkscape4j.path.PathBuilder;
 
 public class TestWriter
 {
@@ -78,17 +71,12 @@ public class TestWriter
 		layer2.getObjects().add(ellipse1);
 		ellipse1.setStyle(style(color(0xaaffaa), color(0x999999), 1, 1, 1, 2));
 
-		List<PathElement> elements1 = new ArrayList<>();
-		Path path1 = new Path("path1", FillRule.EVEN_ODD, elements1);
+		PathBuilder pb = new PathBuilder();
+		pb.move(300, 100).line(200, 150).line(-50, 0).quad(0, 50, -50, 50)
+				.cubic(-50, 0, -100, 100, -100, 0).close();
+		Path path1 = pb.build("path1", FillRule.EVEN_ODD);
 		layer3.getObjects().add(path1);
 		path1.setStyle(style(color(0xffaaaa), color(0x000000), 1, 0.6, 1, 2));
-
-		elements1.add(new MoveTo(300, 100));
-		elements1.add(new LineTo(200, 150));
-		elements1.add(new LineTo(-50, 0));
-		elements1.add(new QuadTo(0, 50, -50, 50));
-		elements1.add(new CubicTo(-50, 0, -100, 100, -100, 0));
-		elements1.add(new Close());
 
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");

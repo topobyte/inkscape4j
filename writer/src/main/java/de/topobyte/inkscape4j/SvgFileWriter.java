@@ -82,12 +82,40 @@ class SvgFileWriter
 	private void writeRect(Rect rect)
 	{
 		writer.println("    <rect");
+		writer.println(
+				String.format("       style=\"%s\"", style(rect.getStyle())));
 		writer.println(String.format("       id=\"%s\"", rect.getId()));
 		writer.println(String.format("       width=\"%f\"", rect.getWidth()));
 		writer.println(String.format("       height=\"%f\"", rect.getHeight()));
 		writer.println(String.format("       x=\"%f\"", rect.getX()));
 		writer.println(String.format("       y=\"%f\"", rect.getY()));
 		writer.println("    />");
+	}
+
+	private String style(Style style)
+	{
+		StringBuilder buffer = new StringBuilder();
+		append(buffer, "opacity", style.getOpacity());
+		append(buffer, ";fill", style.getFill());
+		append(buffer, ";fill-opacity", style.getFillOpacity());
+		append(buffer, ";stroke", style.getStroke());
+		append(buffer, ";stroke-opacity", style.getStrokeOpacity());
+		append(buffer, ";stroke-width", style.getStrokeWidth());
+		return buffer.toString();
+	}
+
+	private void append(StringBuilder buffer, String name, String value)
+	{
+		buffer.append(name);
+		buffer.append(":");
+		buffer.append(value);
+	}
+
+	private void append(StringBuilder buffer, String name, double value)
+	{
+		buffer.append(name);
+		buffer.append(":");
+		buffer.append(Double.toString(value));
 	}
 
 }

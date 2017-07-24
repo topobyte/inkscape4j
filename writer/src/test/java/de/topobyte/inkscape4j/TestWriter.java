@@ -40,6 +40,15 @@ public class TestWriter
 		rect1.setWidth(100);
 		rect1.setHeight(50);
 
+		Style style = new Style();
+		style.setFill("#ffaaaa");
+		style.setStroke("#333333");
+		style.setOpacity(1);
+		style.setFillOpacity(1);
+		style.setStrokeOpacity(1);
+		style.setStrokeWidth(2);
+		rect1.setStyle(style);
+
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");
 		SvgFileWriting.write(file, fos);

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with inkscape4j. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.inkscape4j;
+package de.topobyte.inkscape4j.shape;
 
 public class Circle extends Shape
 {

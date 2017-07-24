@@ -19,7 +19,7 @@ package de.topobyte.inkscape4j.path;
 
 import java.util.List;
 
-import de.topobyte.inkscape4j.Shape;
+import de.topobyte.inkscape4j.shape.Shape;
 
 public class Path extends Shape
 {

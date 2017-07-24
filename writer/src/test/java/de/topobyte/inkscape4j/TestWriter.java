@@ -24,6 +24,9 @@ import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathBuilder;
+import de.topobyte.inkscape4j.shape.Circle;
+import de.topobyte.inkscape4j.shape.Ellipse;
+import de.topobyte.inkscape4j.shape.Rect;
 
 public class TestWriter
 {

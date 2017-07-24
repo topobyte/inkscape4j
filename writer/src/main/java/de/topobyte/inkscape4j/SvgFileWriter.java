@@ -27,6 +27,9 @@ import de.topobyte.inkscape4j.path.MoveTo;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathElement;
 import de.topobyte.inkscape4j.path.QuadTo;
+import de.topobyte.inkscape4j.shape.Circle;
+import de.topobyte.inkscape4j.shape.Ellipse;
+import de.topobyte.inkscape4j.shape.Rect;
 
 class SvgFileWriter
 {

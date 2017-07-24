@@ -17,10 +17,8 @@
 
 package de.topobyte.inkscape4j;
 
-public class Rect
+public class Rect extends Shape
 {
-
-	private String id;
 
 	private double x;
 	private double y;
@@ -31,21 +29,9 @@ public class Rect
 	private double rx;
 	private double ry;
 
-	private Style style;
-
 	public Rect(String id)
 	{
-		this.id = id;
-	}
-
-	public String getId()
-	{
-		return id;
-	}
-
-	public void setId(String id)
-	{
-		this.id = id;
+		super(id);
 	}
 
 	public double getX()
@@ -106,16 +92,6 @@ public class Rect
 	public void setRy(double ry)
 	{
 		this.ry = ry;
-	}
-
-	public Style getStyle()
-	{
-		return style;
-	}
-
-	public void setStyle(Style style)
-	{
-		this.style = style;
 	}
 
 }

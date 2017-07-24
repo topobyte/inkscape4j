@@ -17,47 +17,36 @@
 
 package de.topobyte.inkscape4j;
 
-public class Circle extends Shape
+public abstract class Shape
 {
 
-	private double cx;
-	private double cy;
+	private String id;
 
-	private double radius;
+	private Style style;
 
-	public Circle(String id)
+	public Shape(String id)
 	{
-		super(id);
+		this.id = id;
 	}
 
-	public double getCx()
+	public String getId()
 	{
-		return cx;
+		return id;
 	}
 
-	public void setCx(double cx)
+	public void setId(String id)
 	{
-		this.cx = cx;
+		this.id = id;
 	}
 
-	public double getCy()
+	public Style getStyle()
 	{
-		return cy;
+		return style;
 	}
 
-	public void setCy(double cy)
+	public void setStyle(Style style)
 	{
-		this.cy = cy;
-	}
-
-	public double getRadius()
-	{
-		return radius;
-	}
-
-	public void setRadius(double radius)
-	{
-		this.radius = radius;
+		this.style = style;
 	}
 
 }

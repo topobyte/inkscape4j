@@ -17,15 +17,17 @@
 
 package de.topobyte.inkscape4j;
 
+import de.topobyte.chromaticity.ColorCode;
+
 public class Style
 {
 
 	private double opacity;
 
-	private String fill;
+	private ColorCode fill;
 	private double fillOpacity;
 
-	private String stroke;
+	private ColorCode stroke;
 	private double strokeWidth;
 	private double strokeOpacity;
 
@@ -44,12 +46,12 @@ public class Style
 		this.opacity = opacity;
 	}
 
-	public String getFill()
+	public ColorCode getFill()
 	{
 		return fill;
 	}
 
-	public void setFill(String fill)
+	public void setFill(ColorCode fill)
 	{
 		this.fill = fill;
 	}
@@ -64,12 +66,12 @@ public class Style
 		this.fillOpacity = fillOpacity;
 	}
 
-	public String getStroke()
+	public ColorCode getStroke()
 	{
 		return stroke;
 	}
 
-	public void setStroke(String stroke)
+	public void setStroke(ColorCode stroke)
 	{
 		this.stroke = stroke;
 	}

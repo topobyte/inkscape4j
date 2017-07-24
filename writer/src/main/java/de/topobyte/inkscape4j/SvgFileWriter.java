@@ -20,6 +20,7 @@ package de.topobyte.inkscape4j;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.CubicTo;
 import de.topobyte.inkscape4j.path.LineTo;
 import de.topobyte.inkscape4j.path.MoveTo;
@@ -144,12 +145,17 @@ class SvgFileWriter
 	{
 		StringBuilder buffer = new StringBuilder();
 		append(buffer, "opacity", style.getOpacity());
-		append(buffer, ";fill", style.getFill());
+		append(buffer, ";fill", color(style.getFill()));
 		append(buffer, ";fill-opacity", style.getFillOpacity());
-		append(buffer, ";stroke", style.getStroke());
+		append(buffer, ";stroke", color(style.getStroke()));
 		append(buffer, ";stroke-opacity", style.getStrokeOpacity());
 		append(buffer, ";stroke-width", style.getStrokeWidth());
 		return buffer.toString();
+	}
+
+	private String color(ColorCode color)
+	{
+		return String.format("#%06x", color.getValue() & 0xFFFFFF);
 	}
 
 	private void append(StringBuilder buffer, String name, String value)

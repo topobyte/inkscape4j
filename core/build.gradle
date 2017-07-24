@@ -4,6 +4,7 @@ if (project.hasProperty("topobyte")) {
 }
 
 dependencies {
+    compile 'de.topobyte:chromaticity-core:0.0.2'
 }
 
 def pomInfo = new XmlSlurper().parse(new File(projectDir, 'info.pom'));

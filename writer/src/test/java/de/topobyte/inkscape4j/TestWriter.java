@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.Close;
 import de.topobyte.inkscape4j.path.CubicTo;
 import de.topobyte.inkscape4j.path.FillRule;
@@ -66,19 +67,19 @@ public class TestWriter
 		rect2.setWidth(50);
 		rect2.setHeight(100);
 
-		rect1.setStyle(style("#ffaaaa", "#333333", 1, 1, 1, 2));
-		rect2.setStyle(style("#aaaaff", "#666666", 1, 1, 1, 2));
+		rect1.setStyle(style(0xffaaaa, 0x333333, 1, 1, 1, 2));
+		rect2.setStyle(style(0xaaaaff, 0x666666, 1, 1, 1, 2));
 
 		Circle circle1 = new Circle("circle1");
 		layer2.getObjects().add(circle1);
-		circle1.setStyle(style("#aaffaa", "#999999", 1, 1, 1, 2));
+		circle1.setStyle(style(0xaaffaa, 0x999999, 1, 1, 1, 2));
 		circle1.setCx(60);
 		circle1.setCy(150);
 		circle1.setRadius(50);
 
 		Ellipse ellipse1 = new Ellipse("ellipse1");
 		layer2.getObjects().add(ellipse1);
-		ellipse1.setStyle(style("#aaffaa", "#999999", 1, 1, 1, 2));
+		ellipse1.setStyle(style(0xaaffaa, 0x999999, 1, 1, 1, 2));
 		ellipse1.setCx(200);
 		ellipse1.setCy(180);
 		ellipse1.setRadiusX(80);
@@ -87,7 +88,7 @@ public class TestWriter
 		List<PathElement> elements1 = new ArrayList<>();
 		Path path1 = new Path("path1", FillRule.EVEN_ODD, elements1);
 		layer3.getObjects().add(path1);
-		path1.setStyle(style("#ffaaaa", "#000000", 1, 0.6, 1, 2));
+		path1.setStyle(style(0xffaaaa, 0x000000, 1, 0.6, 1, 2));
 
 		elements1.add(new MoveTo(300, 100));
 		elements1.add(new LineTo(200, 150));
@@ -102,12 +103,12 @@ public class TestWriter
 		fos.close();
 	}
 
-	private static Style style(String fill, String stroke, double opacity,
+	private static Style style(int fill, int stroke, double opacity,
 			double fillOpacity, double strokeOpacity, double strokeWidth)
 	{
 		Style style = new Style();
-		style.setFill(fill);
-		style.setStroke(stroke);
+		style.setFill(new ColorCode(fill, false));
+		style.setStroke(new ColorCode(stroke, false));
 		style.setOpacity(opacity);
 		style.setFillOpacity(fillOpacity);
 		style.setStrokeOpacity(strokeOpacity);

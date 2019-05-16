@@ -76,6 +76,11 @@ public class TestWriter
 		layer2.getObjects().add(ellipse1);
 		ellipse1.setStyle(style(color(0xaaffaa), color(0x999999), 1, 1, 1, 2));
 
+		Ellipse ellipse2 = new Ellipse("ellipse2", 200, 300, 80, 50);
+		layer2.getObjects().add(ellipse2);
+		ellipse2.setStyle(style(color(0xaaffaa), color(0x333333), 1, 1, 1, 2));
+		ellipse2.getStyle().setDashArray(new float[] { 3, 2 });
+
 		PathBuilder pb = new PathBuilder();
 		pb.move(300, 100).line(200, 150).line(-50, 0).quad(0, 50, -50, 50)
 				.cubic(-50, 0, -100, 100, -100, 0).close();

@@ -17,6 +17,8 @@
 
 package de.topobyte.inkscape4j;
 
+import java.util.Optional;
+
 import de.topobyte.chromaticity.ColorCode;
 
 public class Style
@@ -30,6 +32,9 @@ public class Style
 	private ColorCode stroke;
 	private double strokeWidth;
 	private double strokeOpacity;
+
+	private Optional<float[]> dashArray = Optional.empty();
+	private Optional<Float> dashOffset = Optional.empty();
 
 	public Style()
 	{
@@ -94,6 +99,26 @@ public class Style
 	public void setStrokeOpacity(double strokeOpacity)
 	{
 		this.strokeOpacity = strokeOpacity;
+	}
+
+	public Optional<float[]> getDashArray()
+	{
+		return dashArray;
+	}
+
+	public void setDashArray(float[] dashArray)
+	{
+		this.dashArray = Optional.of(dashArray);
+	}
+
+	public Optional<Float> getDashOffset()
+	{
+		return dashOffset;
+	}
+
+	public void setDashOffset(float dashOffset)
+	{
+		this.dashOffset = Optional.of(dashOffset);
 	}
 
 }

@@ -163,6 +163,29 @@ class SvgFileWriter
 		append(buffer, ";stroke", color(style.getStroke()));
 		append(buffer, ";stroke-opacity", style.getStrokeOpacity());
 		append(buffer, ";stroke-width", style.getStrokeWidth());
+		if (style.getDashArray().isPresent()) {
+			append(buffer, ";stroke-dasharray",
+					list(style.getDashArray().get()));
+		}
+		if (style.getDashOffset().isPresent()) {
+			append(buffer, ";stroke-dashoffset", style.getDashOffset().get());
+		}
+		return buffer.toString();
+	}
+
+	private String list(float[] dashArray)
+	{
+		if (dashArray.length == 0) {
+			return "";
+		}
+
+		StringBuilder buffer = new StringBuilder();
+		buffer.append(dashArray[0]);
+		for (int i = 1; i < dashArray.length; i++) {
+			buffer.append(",");
+			buffer.append(dashArray[i]);
+		}
+
 		return buffer.toString();
 	}
 

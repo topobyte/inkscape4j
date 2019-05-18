@@ -31,6 +31,8 @@ import de.topobyte.inkscape4j.path.QuadTo;
 import de.topobyte.inkscape4j.shape.Circle;
 import de.topobyte.inkscape4j.shape.Ellipse;
 import de.topobyte.inkscape4j.shape.Rect;
+import de.topobyte.inkscape4j.style.LineCap;
+import de.topobyte.inkscape4j.style.LineJoin;
 
 class SvgFileWriter
 {
@@ -169,6 +171,17 @@ class SvgFileWriter
 		}
 		if (style.getDashOffset().isPresent()) {
 			append(buffer, ";stroke-dashoffset", style.getDashOffset().get());
+		}
+		if (style.getLineCap() != LineCap.BUTT) {
+			append(buffer, ";stroke-linecap",
+					style.getLineCap().name().toLowerCase());
+		}
+		if (style.getLineJoin() != LineJoin.MITER) {
+			append(buffer, ";stroke-linejoin",
+					style.getLineJoin().name().toLowerCase());
+		}
+		if (style.getMiterLimit().isPresent()) {
+			append(buffer, ";stroke-miterlimit", style.getMiterLimit().get());
 		}
 		return buffer.toString();
 	}

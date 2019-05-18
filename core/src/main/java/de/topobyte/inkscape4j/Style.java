@@ -20,6 +20,8 @@ package de.topobyte.inkscape4j;
 import java.util.Optional;
 
 import de.topobyte.chromaticity.ColorCode;
+import de.topobyte.inkscape4j.style.LineCap;
+import de.topobyte.inkscape4j.style.LineJoin;
 
 public class Style
 {
@@ -35,6 +37,10 @@ public class Style
 
 	private Optional<float[]> dashArray = Optional.empty();
 	private Optional<Float> dashOffset = Optional.empty();
+
+	private LineJoin lineJoin = LineJoin.MITER;
+	private LineCap lineCap = LineCap.BUTT;
+	private Optional<Float> miterLimit = Optional.empty();
 
 	public Style()
 	{
@@ -119,6 +125,36 @@ public class Style
 	public void setDashOffset(float dashOffset)
 	{
 		this.dashOffset = Optional.of(dashOffset);
+	}
+
+	public LineJoin getLineJoin()
+	{
+		return lineJoin;
+	}
+
+	public void setLineJoin(LineJoin lineJoin)
+	{
+		this.lineJoin = lineJoin;
+	}
+
+	public LineCap getLineCap()
+	{
+		return lineCap;
+	}
+
+	public void setLineCap(LineCap lineCap)
+	{
+		this.lineCap = lineCap;
+	}
+
+	public void setMiterLimit(float miterLimit)
+	{
+		this.miterLimit = Optional.of(miterLimit);
+	}
+
+	public Optional<Float> getMiterLimit()
+	{
+		return miterLimit;
 	}
 
 }

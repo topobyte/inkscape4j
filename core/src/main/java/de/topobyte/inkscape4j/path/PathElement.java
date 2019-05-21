@@ -22,4 +22,8 @@ public interface PathElement
 
 	public Type getType();
 
+	public boolean isRelative();
+
+	public void setRelative(boolean isRelative);
+
 }

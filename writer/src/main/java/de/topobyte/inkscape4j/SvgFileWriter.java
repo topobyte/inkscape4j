@@ -235,26 +235,31 @@ class SvgFileWriter
 			switch (element.getType()) {
 			default:
 			case MOVE:
+				String cmd = element.isRelative() ? "m" : "M";
 				MoveTo move = (MoveTo) element;
-				buffer.append(
-						String.format("M %f,%f", move.getX(), move.getY()));
+				buffer.append(String.format("%s %f,%f", cmd, move.getX(),
+						move.getY()));
 				break;
 			case CLOSE:
-				buffer.append("Z");
+				cmd = element.isRelative() ? "z" : "Z";
+				buffer.append(cmd);
 				break;
 			case LINE:
+				cmd = element.isRelative() ? "l" : "L";
 				LineTo line = (LineTo) element;
-				buffer.append(
-						String.format("l %f,%f", line.getX(), line.getY()));
+				buffer.append(String.format("%s %f,%f", cmd, line.getX(),
+						line.getY()));
 				break;
 			case QUAD:
+				cmd = element.isRelative() ? "q" : "Q";
 				QuadTo quad = (QuadTo) element;
-				buffer.append(String.format("q %f,%f %f,%f", quad.getCX(),
+				buffer.append(String.format("%s %f,%f %f,%f", cmd, quad.getCX(),
 						quad.getCY(), quad.getX(), quad.getY()));
 				break;
 			case CUBIC:
+				cmd = element.isRelative() ? "c" : "C";
 				CubicTo cubic = (CubicTo) element;
-				buffer.append(String.format("c %f,%f %f,%f %f,%f",
+				buffer.append(String.format("%s %f,%f %f,%f %f,%f", cmd,
 						cubic.getCX1(), cubic.getCY1(), cubic.getCX2(),
 						cubic.getCY2(), cubic.getX(), cubic.getY()));
 				break;

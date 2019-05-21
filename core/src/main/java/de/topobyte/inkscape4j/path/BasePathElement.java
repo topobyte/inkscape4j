@@ -1,4 +1,4 @@
-// Copyright 2017 Sebastian Kuerten
+// Copyright 2019 Sebastian Kuerten
 //
 // This file is part of inkscape4j.
 //
@@ -17,23 +17,26 @@
 
 package de.topobyte.inkscape4j.path;
 
-public class Close extends BasePathElement
+public abstract class BasePathElement implements PathElement
 {
 
+	private boolean isRelative;
+
+	public BasePathElement(boolean isRelative)
+	{
+		this.isRelative = isRelative;
+	}
+
 	@Override
-	public Type getType()
+	public boolean isRelative()
 	{
-		return Type.CLOSE;
+		return isRelative;
 	}
 
-	public Close()
+	@Override
+	public void setRelative(boolean isRelative)
 	{
-		this(true);
-	}
-
-	public Close(boolean isRelative)
-	{
-		super(isRelative);
+		this.isRelative = isRelative;
 	}
 
 }

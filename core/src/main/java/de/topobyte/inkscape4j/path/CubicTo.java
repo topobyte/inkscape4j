@@ -17,7 +17,7 @@
 
 package de.topobyte.inkscape4j.path;
 
-public class CubicTo implements PathElement
+public class CubicTo extends BasePathElement
 {
 
 	@Override
@@ -36,6 +36,13 @@ public class CubicTo implements PathElement
 	public CubicTo(double cx1, double cy1, double cx2, double cy2, double x,
 			double y)
 	{
+		this(true, cx1, cy1, cx2, cy2, x, y);
+	}
+
+	public CubicTo(boolean isRelative, double cx1, double cy1, double cx2,
+			double cy2, double x, double y)
+	{
+		super(isRelative);
 		this.cx1 = cx1;
 		this.cy1 = cy1;
 		this.cx2 = cx2;

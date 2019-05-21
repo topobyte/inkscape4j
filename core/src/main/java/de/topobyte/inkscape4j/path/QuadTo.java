@@ -17,7 +17,7 @@
 
 package de.topobyte.inkscape4j.path;
 
-public class QuadTo implements PathElement
+public class QuadTo extends BasePathElement
 {
 
 	@Override
@@ -33,6 +33,12 @@ public class QuadTo implements PathElement
 
 	public QuadTo(double cx, double cy, double x, double y)
 	{
+		this(true, cx, cy, x, y);
+	}
+
+	public QuadTo(boolean isRelative, double cx, double cy, double x, double y)
+	{
+		super(isRelative);
 		this.cx = cx;
 		this.cy = cy;
 		this.x = x;

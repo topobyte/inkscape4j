@@ -17,7 +17,7 @@
 
 package de.topobyte.inkscape4j.path;
 
-public class MoveTo implements PathElement
+public class MoveTo extends BasePathElement
 {
 
 	@Override
@@ -31,6 +31,12 @@ public class MoveTo implements PathElement
 
 	public MoveTo(double x, double y)
 	{
+		this(true, x, y);
+	}
+
+	public MoveTo(boolean isRelative, double x, double y)
+	{
+		super(isRelative);
 		this.x = x;
 		this.y = y;
 	}

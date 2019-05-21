@@ -17,7 +17,7 @@
 
 package de.topobyte.inkscape4j.path;
 
-public class LineTo implements PathElement
+public class LineTo extends BasePathElement
 {
 
 	@Override
@@ -31,6 +31,12 @@ public class LineTo implements PathElement
 
 	public LineTo(double x, double y)
 	{
+		this(true, x, y);
+	}
+
+	public LineTo(boolean isRelative, double x, double y)
+	{
+		super(isRelative);
 		this.x = x;
 		this.y = y;
 	}

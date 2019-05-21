@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>Inkscape4j AWT-bindings</name>
+  <description>Library for working with Inkscape SVG files</description>
+  <url>https://github.com/topobyte/inkscape4j</url>
+</project>

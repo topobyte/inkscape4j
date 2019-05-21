@@ -67,6 +67,13 @@ public class PathBuilder
 		return this;
 	}
 
+	public PathBuilder quad(boolean relative, double cx, double cy, double x,
+			double y)
+	{
+		elements.add(new QuadTo(relative, cx, cy, x, y));
+		return this;
+	}
+
 	public PathBuilder cubic(double cx1, double cy1, double cx2, double cy2,
 			double x, double y)
 	{

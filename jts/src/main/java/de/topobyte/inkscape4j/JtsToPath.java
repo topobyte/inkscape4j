@@ -88,7 +88,7 @@ public class JtsToPath
 	private static void convert(PathBuilder pb, LineString ls)
 	{
 		Coordinate c0 = ls.getCoordinateN(0);
-		pb.move(c0.x, c0.y);
+		pb.move(false, c0.x, c0.y);
 
 		Coordinate p = c0;
 		for (int i = 1; i < ls.getNumPoints() - 1; i++) {

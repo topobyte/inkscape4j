@@ -23,7 +23,7 @@ import static de.topobyte.inkscape4j.Styles.style;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Polygon;
 
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;

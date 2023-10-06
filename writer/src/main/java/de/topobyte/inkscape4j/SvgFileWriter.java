@@ -109,6 +109,12 @@ class SvgFileWriter
 		writer.println(String.format("       height=\"%f\"", rect.getHeight()));
 		writer.println(String.format("       x=\"%f\"", rect.getX()));
 		writer.println(String.format("       y=\"%f\"", rect.getY()));
+		if (rect.getRx() != 0) {
+			writer.println(String.format("       rx=\"%f\"", rect.getRx()));
+		}
+		if (rect.getRy() != 0) {
+			writer.println(String.format("       ry=\"%f\"", rect.getRy()));
+		}
 		writer.println("    />");
 	}
 

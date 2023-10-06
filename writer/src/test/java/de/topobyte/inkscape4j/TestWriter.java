@@ -61,6 +61,8 @@ public class TestWriter
 		layer1.getObjects().add(rect3);
 
 		Rect rect4 = new Rect("rect4", 240, 20, 50, 50);
+		rect4.setRx(10);
+		rect4.setRy(5);
 		layer1.getObjects().add(rect4);
 
 		rect1.setStyle(style(color(0xffaaaa), color(0x333333), 1, 1, 1, 2));

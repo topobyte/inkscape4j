@@ -4,23 +4,22 @@ if (project.hasProperty("topobyte")) {
 }
 
 dependencies {
-    compile project(':inkscape4j-core')
-    compile 'org.locationtech.jts:jts-core:1.16.1'
+    api project(':inkscape4j-core')
+    api 'org.locationtech.jts:jts-core:1.16.1'
 
-    testCompile project(':inkscape4j-writer')
+    testImplementation project(':inkscape4j-writer')
 }
 
-def pomInfo = new XmlSlurper().parse(new File(projectDir, 'info.pom'));
+def pomInfo = new XmlSlurper().parse(file('info.pom'));
 
-afterEvaluate { project ->
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                pom.project {
-                    name pomInfo.name
-                    description pomInfo.description
-                    url pomInfo.url
-                }
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom {
+                name = "$pomInfo.name"
+                description = "$pomInfo.description"
+                url = "$pomInfo.url"
             }
         }
     }

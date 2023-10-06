@@ -1,5 +1,5 @@
 wrapper {
-    gradleVersion = '5.2.1'
+    gradleVersion = '7.6.1'
 }
 
 allprojects {
@@ -7,27 +7,32 @@ allprojects {
     version = pVersion
 }
 
-subprojects {
+ext.libraries = [
+    project(':inkscape4j-core'),
+    project(':inkscape4j-jts'),
+    project(':inkscape4j-awt'),
+    project(':inkscape4j-writer'),
+]
+
+configure(libraries) {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+}
+
+configure(subprojects.findAll {it !in libraries}) {
     apply plugin: 'java'
+}
+
+subprojects {
     apply plugin: 'eclipse'
-    apply plugin: 'maven'
 
     repositories {
         maven {
-            url 'http://mvn.topobyte.de'
+            url 'https://mvn.topobyte.de'
         }
         mavenCentral()
     }
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    artifacts {
-        archives sourcesJar
-    }
 }

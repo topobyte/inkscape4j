@@ -5,7 +5,7 @@ if (project.hasProperty("topobyte")) {
 
 dependencies {
     api project(':inkscape4j-core')
-    api 'org.locationtech.jts:jts-core:1.16.1'
+    api 'org.locationtech.jts:jts-core:1.19.0'
 
     testImplementation project(':inkscape4j-writer')
 }

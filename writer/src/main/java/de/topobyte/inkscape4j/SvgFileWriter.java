@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 
 import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.CubicTo;
+import de.topobyte.inkscape4j.path.StringPath;
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.LineTo;
 import de.topobyte.inkscape4j.path.MoveTo;
@@ -86,9 +87,31 @@ class SvgFileWriter
 		writer.println("  </g>");
 	}
 
+	private void writeGroup(Group group)
+	{
+		writer.println("  <g");
+		if (group.getId() != null) {
+			writer.println(
+					String.format("     inkscape:id=\"%s\"", group.getId()));
+		}
+		if (group.getTransform() != null) {
+			writer.println(String.format("     transform=\"%s\"",
+					group.getTransform()));
+		}
+		writer.println("  >");
+
+		for (Object object : group.getObjects()) {
+			writeObject(object);
+		}
+
+		writer.println("  </g>");
+	}
+
 	private void writeObject(Object object)
 	{
-		if (object instanceof Rect) {
+		if (object instanceof Group) {
+			writeGroup((Group) object);
+		} else if (object instanceof Rect) {
 			writeRect((Rect) object);
 		} else if (object instanceof Circle) {
 			writeCircle((Circle) object);
@@ -96,6 +119,8 @@ class SvgFileWriter
 			writeEllipse((Ellipse) object);
 		} else if (object instanceof Path) {
 			writePath((Path) object);
+		} else if (object instanceof StringPath) {
+			writePath((StringPath) object);
 		}
 	}
 
@@ -145,20 +170,31 @@ class SvgFileWriter
 
 	private void writePath(Path path)
 	{
+		writePath(path.getStyle(), path.getId(), path.getFillRule(),
+				path(path));
+	}
+
+	private void writePath(StringPath path)
+	{
+		writePath(path.getStyle(), path.getId(), path.getFillRule(),
+				path.getDefinition());
+	}
+
+	private void writePath(Style style, String id, FillRule fillRule,
+			String definition)
+	{
 		writer.println("    <path");
-		writer.println(
-				String.format("       style=\"%s\"", style(path.getStyle())));
-		writer.println(String.format("       id=\"%s\"", path.getId()));
-		FillRule fillRule = path.getFillRule();
+		writer.println(String.format("       style=\"%s\"", style(style)));
+		writer.println(String.format("       id=\"%s\"", id));
 		if (fillRule != null) {
 			if (fillRule == FillRule.NON_ZERO) {
 				// ignore, this is the default value
 			} else if (fillRule == FillRule.EVEN_ODD) {
-				writer.println(String.format("       fill-rule=\"evenodd\"",
-						path.getId()));
+				writer.println(
+						String.format("       fill-rule=\"evenodd\"", id));
 			}
 		}
-		writer.println(String.format("       d=\"%s\"", path(path)));
+		writer.println(String.format("       d=\"%s\"", definition));
 		writer.println("    />");
 	}
 

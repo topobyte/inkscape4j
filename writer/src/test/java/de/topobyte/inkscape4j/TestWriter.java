@@ -22,7 +22,19 @@ import static de.topobyte.inkscape4j.Styles.style;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import de.topobyte.inkscape4j.path.StringPath;
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathBuilder;
@@ -33,11 +45,12 @@ import de.topobyte.inkscape4j.shape.Rect;
 public class TestWriter
 {
 
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
+			throws IOException, ParserConfigurationException, SAXException
 	{
 		SvgFile file = new SvgFile();
 		file.setWidth("500px");
-		file.setHeight("400px");
+		file.setHeight("460px");
 
 		Layer layer1 = new Layer("rects");
 		file.getLayers().add(layer1);
@@ -50,6 +63,10 @@ public class TestWriter
 		Layer layer3 = new Layer("paths");
 		file.getLayers().add(layer3);
 		layer3.setLabel("Some paths");
+
+		Layer layer4 = new Layer("icons");
+		file.getLayers().add(layer4);
+		layer4.setLabel("Icons");
 
 		Rect rect1 = new Rect("rect1", 10, 20, 100, 50);
 		layer1.getObjects().add(rect1);
@@ -90,10 +107,58 @@ public class TestWriter
 		layer3.getObjects().add(path1);
 		path1.setStyle(style(color(0xffaaaa), color(0x000000), 1, 0.6, 1, 2));
 
+		// viewbox for Material icons is 960x960. Scale to 100px size.
+		double factor = 100 / 960.;
+
+		Group groupRocket = new Group("group-rocket");
+		groupRocket.setTransform(
+				String.format("matrix(%f,0,0,%f,0,460)", factor, factor));
+		layer4.getObjects().add(groupRocket);
+
+		StringPath pathRocket = new StringPath("rocket", FillRule.EVEN_ODD,
+				getPath("material/rocket.svg"));
+		pathRocket.setStyle(style(color(0xaaaaff), null, 1, 1, 1, 2));
+		groupRocket.getObjects().add(pathRocket);
+
+		Group groupShare = new Group("group-share");
+		groupShare.setTransform(
+				String.format("matrix(%f,0,0,%f,100,460)", factor, factor));
+		layer4.getObjects().add(groupShare);
+
+		StringPath pathShare = new StringPath("share", FillRule.EVEN_ODD,
+				getPath("material/share.svg"));
+		pathShare.setStyle(style(color(0xffaaff), null, 1, 1, 1, 2));
+		groupShare.getObjects().add(pathShare);
+
+		Group groupBattery = new Group("group-battery");
+		groupBattery.setTransform(
+				String.format("matrix(%f,0,0,%f,200,460)", factor, factor));
+		layer4.getObjects().add(groupBattery);
+
+		StringPath pathBattery = new StringPath("share", FillRule.EVEN_ODD,
+				getPath("material/battery.svg"));
+		pathBattery.setStyle(style(color(0xaaffff), null, 1, 1, 1, 2));
+		groupBattery.getObjects().add(pathBattery);
+
 		SvgFileWriting.write(file, System.out);
 		FileOutputStream fos = new FileOutputStream("/tmp/test.svg");
 		SvgFileWriting.write(file, fos);
 		fos.close();
+	}
+
+	private static String getPath(String resource)
+			throws ParserConfigurationException, SAXException, IOException
+	{
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		try (InputStream input = Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream(resource)) {
+			Document doc = builder.parse(input);
+			NodeList paths = doc.getElementsByTagName("path");
+			Node item = paths.item(0);
+			Attr d = (Attr) item.getAttributes().getNamedItem("d");
+			return d.getValue();
+		}
 	}
 
 }

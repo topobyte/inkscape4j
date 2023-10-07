@@ -24,8 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Attr;
@@ -34,13 +32,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.topobyte.inkscape4j.path.StringPath;
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathBuilder;
+import de.topobyte.inkscape4j.path.StringPath;
 import de.topobyte.inkscape4j.shape.Circle;
 import de.topobyte.inkscape4j.shape.Ellipse;
 import de.topobyte.inkscape4j.shape.Rect;
+import de.topobyte.inkscape4j.w3c.XmlUtils;
 
 public class TestWriter
 {
@@ -149,11 +148,9 @@ public class TestWriter
 	private static String getPath(String resource)
 			throws ParserConfigurationException, SAXException, IOException
 	{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
 		try (InputStream input = Thread.currentThread().getContextClassLoader()
 				.getResourceAsStream(resource)) {
-			Document doc = builder.parse(input);
+			Document doc = XmlUtils.parseSvg(input);
 			NodeList paths = doc.getElementsByTagName("path");
 			Node item = paths.item(0);
 			Attr d = (Attr) item.getAttributes().getNamedItem("d");

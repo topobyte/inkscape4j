@@ -17,35 +17,41 @@
 
 package de.topobyte.inkscape4j;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.CubicTo;
-import de.topobyte.inkscape4j.path.StringPath;
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.LineTo;
 import de.topobyte.inkscape4j.path.MoveTo;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathElement;
 import de.topobyte.inkscape4j.path.QuadTo;
+import de.topobyte.inkscape4j.path.StringPath;
 import de.topobyte.inkscape4j.shape.Circle;
 import de.topobyte.inkscape4j.shape.Ellipse;
 import de.topobyte.inkscape4j.shape.Rect;
 import de.topobyte.inkscape4j.style.LineCap;
 import de.topobyte.inkscape4j.style.LineJoin;
+import de.topobyte.inkscape4j.w3c.ChildDocument;
+import de.topobyte.xml4jah.core.DocumentWriterConfig;
+import de.topobyte.xml4jah.dom.DocumentWriter;
 
 class SvgFileWriter
 {
 
 	private SvgFile svgFile;
 
+	private OutputStream output;
 	private PrintWriter writer;
 
 	SvgFileWriter(SvgFile svgFile, OutputStream output)
 	{
 		this.svgFile = svgFile;
 
+		this.output = output;
 		writer = new PrintWriter(output);
 	}
 
@@ -121,6 +127,8 @@ class SvgFileWriter
 			writePath((Path) object);
 		} else if (object instanceof StringPath) {
 			writePath((StringPath) object);
+		} else if (object instanceof ChildDocument) {
+			writeChildDocument((ChildDocument) object);
 		}
 	}
 
@@ -196,6 +204,20 @@ class SvgFileWriter
 		}
 		writer.println(String.format("       d=\"%s\"", definition));
 		writer.println("    />");
+	}
+
+	private void writeChildDocument(ChildDocument child)
+	{
+		DocumentWriterConfig config = new DocumentWriterConfig();
+		config.setWithDeclaration(false);
+		DocumentWriter docWriter = new DocumentWriter(config);
+		try {
+			writer.flush();
+			docWriter.write(child.getDocument(), output);
+			output.flush();
+		} catch (IOException e) {
+			throw new RuntimeException("Error while writing child document", e);
+		}
 	}
 
 	private String style(Style style)

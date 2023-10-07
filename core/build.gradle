@@ -5,6 +5,8 @@ if (project.hasProperty("topobyte")) {
 
 dependencies {
     api 'de.topobyte:chromaticity-core:0.0.2'
+    api 'de.topobyte:xml4jah-core:0.0.6'
+    api 'de.topobyte:xml4jah-dom:0.0.6'
 }
 
 def pomInfo = new XmlSlurper().parse(file('info.pom'));

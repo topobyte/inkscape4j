@@ -15,3 +15,9 @@ another one for buildings, and yet more layers for lakes, rivers etc.
 It would then be relatively easy, or at least possible, for a user to
 work on the map image afterwards and apply operations such as hiding a
 set of features or selecting all buildings and changing their color.
+
+## TODO
+
+* Make sure there are not duplicate ids when embedding SVG images
+* Improve formatting of resulting files (indent) with embedded SVG images
+* Use US locale for all String.format() calls

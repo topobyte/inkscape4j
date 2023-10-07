@@ -26,6 +26,7 @@ import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -110,8 +111,8 @@ public class TestWriter
 		double factor = 100 / 960.;
 
 		Group groupRocket = new Group("group-rocket");
-		groupRocket.setTransform(
-				String.format("matrix(%f,0,0,%f,0,460)", factor, factor));
+		groupRocket.setTransform(new AffineTransformation()
+				.scale(factor, factor).translate(0, 460));
 		layer4.getObjects().add(groupRocket);
 
 		StringPath pathRocket = new StringPath("rocket", FillRule.EVEN_ODD,
@@ -120,8 +121,8 @@ public class TestWriter
 		groupRocket.getObjects().add(pathRocket);
 
 		Group groupShare = new Group("group-share");
-		groupShare.setTransform(
-				String.format("matrix(%f,0,0,%f,100,460)", factor, factor));
+		groupShare.setTransform(new AffineTransformation().scale(factor, factor)
+				.translate(100, 460));
 		layer4.getObjects().add(groupShare);
 
 		StringPath pathShare = new StringPath("share", FillRule.EVEN_ODD,
@@ -130,8 +131,8 @@ public class TestWriter
 		groupShare.getObjects().add(pathShare);
 
 		Group groupBattery = new Group("group-battery");
-		groupBattery.setTransform(
-				String.format("matrix(%f,0,0,%f,200,460)", factor, factor));
+		groupBattery.setTransform(new AffineTransformation()
+				.scale(factor, factor).translate(200, 460));
 		layer4.getObjects().add(groupBattery);
 
 		StringPath pathBattery = new StringPath("share", FillRule.EVEN_ODD,

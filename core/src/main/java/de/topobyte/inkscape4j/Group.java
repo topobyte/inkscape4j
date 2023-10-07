@@ -20,12 +20,14 @@ package de.topobyte.inkscape4j;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.locationtech.jts.geom.util.AffineTransformation;
+
 public class Group
 {
 
 	private String id;
 
-	private String transform;
+	private AffineTransformation transform;
 
 	private List<Object> objects = new ArrayList<>();
 
@@ -54,12 +56,12 @@ public class Group
 		this.objects = objects;
 	}
 
-	public String getTransform()
+	public AffineTransformation getTransform()
 	{
 		return transform;
 	}
 
-	public void setTransform(String transform)
+	public void setTransform(AffineTransformation transform)
 	{
 		this.transform = transform;
 	}

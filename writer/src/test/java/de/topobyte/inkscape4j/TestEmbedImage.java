@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -74,15 +75,15 @@ public class TestEmbedImage
 		Group svg1 = new Group("svg-1");
 		layer1.getObjects().add(svg1);
 
-		svg1.setTransform(
-				String.format("matrix(%f,0,0,%f,10,20)", factor, factor));
+		svg1.setTransform(new AffineTransformation().scale(factor, factor)
+				.translate(10, 20));
 		svg1.getObjects().add(child);
 
 		Group svg2 = new Group("svg-2");
 		layer1.getObjects().add(svg2);
 
-		svg2.setTransform(
-				String.format("matrix(%f,0,0,%f,220,20)", factor, factor));
+		svg2.setTransform(new AffineTransformation().scale(factor, factor)
+				.translate(220, 20));
 		svg2.getObjects().add(child);
 
 		SvgFileWriting.write(file, System.out);

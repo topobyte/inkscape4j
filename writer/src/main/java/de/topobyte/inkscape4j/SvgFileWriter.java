@@ -20,6 +20,9 @@ package de.topobyte.inkscape4j;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Locale;
+
+import org.locationtech.jts.geom.util.AffineTransformation;
 
 import de.topobyte.chromaticity.ColorCode;
 import de.topobyte.inkscape4j.path.CubicTo;
@@ -101,8 +104,12 @@ class SvgFileWriter
 					String.format("     inkscape:id=\"%s\"", group.getId()));
 		}
 		if (group.getTransform() != null) {
-			writer.println(String.format("     transform=\"%s\"",
-					group.getTransform()));
+			AffineTransformation transform = group.getTransform();
+			double[] entries = transform.getMatrixEntries();
+			writer.println(String.format(
+					"     transform=\"matrix(%f,%f,%f,%f,%f,%f)\"", entries[0],
+					entries[3], entries[1], entries[4], entries[2], entries[5],
+					Locale.US));
 		}
 		writer.println("  >");
 

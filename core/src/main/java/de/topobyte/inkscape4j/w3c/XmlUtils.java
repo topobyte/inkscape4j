@@ -21,12 +21,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public class XmlUtils
@@ -45,6 +50,23 @@ public class XmlUtils
 	{
 		try (InputStream input = Files.newInputStream(path)) {
 			return parseSvg(input);
+		}
+	}
+
+	public static void convertToGroup(Document document)
+	{
+		Element svg = document.getDocumentElement();
+		document.renameNode(svg, null, "g");
+
+		Set<String> attributeNames = new HashSet<>();
+		NamedNodeMap attributes = svg.getAttributes();
+		for (int i = 0; i < attributes.getLength(); i++) {
+			Node item = attributes.item(i);
+			attributeNames.add(item.getNodeName());
+		}
+
+		for (String attribute : attributeNames) {
+			attributes.removeNamedItem(attribute);
 		}
 	}
 

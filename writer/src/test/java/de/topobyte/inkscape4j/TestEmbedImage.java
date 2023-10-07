@@ -23,16 +23,11 @@ import static de.topobyte.inkscape4j.Styles.style;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import de.topobyte.inkscape4j.shape.Rect;
@@ -67,7 +62,7 @@ public class TestEmbedImage
 		rect2.setStyle(style(null, color(0x000000), 1, 1, 1, 2));
 
 		Document document = XmlUtils.parseSvg(Paths.get("/tmp/test.svg"));
-		convertToGroup(document);
+		XmlUtils.convertToGroup(document);
 		ChildDocument child = new ChildDocument(document);
 
 		double factor = 200 / 500.;
@@ -90,23 +85,6 @@ public class TestEmbedImage
 		FileOutputStream fos = new FileOutputStream("/tmp/embed.svg");
 		SvgFileWriting.write(file, fos);
 		fos.close();
-	}
-
-	private static void convertToGroup(Document document)
-	{
-		Element svg = document.getDocumentElement();
-		document.renameNode(svg, null, "g");
-
-		Set<String> attributeNames = new HashSet<>();
-		NamedNodeMap attributes = svg.getAttributes();
-		for (int i = 0; i < attributes.getLength(); i++) {
-			Node item = attributes.item(i);
-			attributeNames.add(item.getNodeName());
-		}
-
-		for (String attribute : attributeNames) {
-			attributes.removeNamedItem(attribute);
-		}
 	}
 
 }

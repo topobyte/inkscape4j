@@ -67,6 +67,8 @@ class SvgFileWriter
 		writer.println("<svg");
 		writer.println(
 				"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"");
+		writer.println("   xmlns=\"http://www.w3.org/2000/svg\"");
+		writer.println("   xmlns:svg=\"http://www.w3.org/2000/svg\"");
 		writer.println(String.format("   width=\"%s\"", svgFile.getWidth()));
 		writer.println(String.format("   height=\"%s\"", svgFile.getHeight()));
 		writer.println(">");

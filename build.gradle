@@ -17,6 +17,10 @@ ext.libraries = [
 configure(libraries) {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
+
+    java {
+        withSourcesJar()
+    }
 }
 
 configure(subprojects.findAll {it !in libraries}) {

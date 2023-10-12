@@ -108,10 +108,10 @@ class SvgFileWriter
 		if (group.getTransform() != null) {
 			AffineTransformation transform = group.getTransform();
 			double[] entries = transform.getMatrixEntries();
-			writer.println(String.format(
+			writer.println(String.format(Locale.US,
 					"     transform=\"matrix(%f,%f,%f,%f,%f,%f)\"", entries[0],
-					entries[3], entries[1], entries[4], entries[2], entries[5],
-					Locale.US));
+					entries[3], entries[1], entries[4], entries[2],
+					entries[5]));
 		}
 		writer.println("  >");
 

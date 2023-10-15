@@ -20,4 +20,3 @@ set of features or selecting all buildings and changing their color.
 
 * Make sure there are not duplicate ids when embedding SVG images
 * Improve formatting of resulting files (indent) with embedded SVG images
-* Use US locale for all String.format() calls

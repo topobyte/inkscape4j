@@ -58,6 +58,11 @@ class SvgFileWriter
 		writer = new PrintWriter(output);
 	}
 
+	private static String format(String format, Object... args)
+	{
+		return String.format(Locale.US, format, args);
+	}
+
 	void write()
 	{
 		writer.println(
@@ -69,8 +74,8 @@ class SvgFileWriter
 				"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"");
 		writer.println("   xmlns=\"http://www.w3.org/2000/svg\"");
 		writer.println("   xmlns:svg=\"http://www.w3.org/2000/svg\"");
-		writer.println(String.format("   width=\"%s\"", svgFile.getWidth()));
-		writer.println(String.format("   height=\"%s\"", svgFile.getHeight()));
+		writer.println(format("   width=\"%s\"", svgFile.getWidth()));
+		writer.println(format("   height=\"%s\"", svgFile.getHeight()));
 		writer.println(">");
 
 		for (Layer layer : svgFile.getLayers()) {
@@ -85,10 +90,9 @@ class SvgFileWriter
 	private void writeLayer(Layer layer)
 	{
 		writer.println("  <g");
-		writer.println(
-				String.format("     inkscape:label=\"%s\"", layer.getLabel()));
+		writer.println(format("     inkscape:label=\"%s\"", layer.getLabel()));
 		writer.println("     inkscape:groupmode=\"layer\"");
-		writer.println(String.format("     inkscape:id=\"%s\"", layer.getId()));
+		writer.println(format("     inkscape:id=\"%s\"", layer.getId()));
 		writer.println("  >");
 
 		for (Object object : layer.getObjects()) {
@@ -102,16 +106,15 @@ class SvgFileWriter
 	{
 		writer.println("  <g");
 		if (group.getId() != null) {
-			writer.println(
-					String.format("     inkscape:id=\"%s\"", group.getId()));
+			writer.println(format("     inkscape:id=\"%s\"", group.getId()));
 		}
 		if (group.getTransform() != null) {
 			AffineTransformation transform = group.getTransform();
 			double[] entries = transform.getMatrixEntries();
-			writer.println(String.format(Locale.US,
-					"     transform=\"matrix(%f,%f,%f,%f,%f,%f)\"", entries[0],
-					entries[3], entries[1], entries[4], entries[2],
-					entries[5]));
+			writer.println(
+					format("     transform=\"matrix(%f,%f,%f,%f,%f,%f)\"",
+							entries[0], entries[3], entries[1], entries[4],
+							entries[2], entries[5]));
 		}
 		writer.println("  >");
 
@@ -144,18 +147,17 @@ class SvgFileWriter
 	private void writeRect(Rect rect)
 	{
 		writer.println("    <rect");
-		writer.println(
-				String.format("       style=\"%s\"", style(rect.getStyle())));
-		writer.println(String.format("       id=\"%s\"", rect.getId()));
-		writer.println(String.format("       width=\"%f\"", rect.getWidth()));
-		writer.println(String.format("       height=\"%f\"", rect.getHeight()));
-		writer.println(String.format("       x=\"%f\"", rect.getX()));
-		writer.println(String.format("       y=\"%f\"", rect.getY()));
+		writer.println(format("       style=\"%s\"", style(rect.getStyle())));
+		writer.println(format("       id=\"%s\"", rect.getId()));
+		writer.println(format("       width=\"%f\"", rect.getWidth()));
+		writer.println(format("       height=\"%f\"", rect.getHeight()));
+		writer.println(format("       x=\"%f\"", rect.getX()));
+		writer.println(format("       y=\"%f\"", rect.getY()));
 		if (rect.getRx() != 0) {
-			writer.println(String.format("       rx=\"%f\"", rect.getRx()));
+			writer.println(format("       rx=\"%f\"", rect.getRx()));
 		}
 		if (rect.getRy() != 0) {
-			writer.println(String.format("       ry=\"%f\"", rect.getRy()));
+			writer.println(format("       ry=\"%f\"", rect.getRy()));
 		}
 		writer.println("    />");
 	}
@@ -163,25 +165,24 @@ class SvgFileWriter
 	private void writeCircle(Circle circle)
 	{
 		writer.println("    <circle");
-		writer.println(
-				String.format("       style=\"%s\"", style(circle.getStyle())));
-		writer.println(String.format("       id=\"%s\"", circle.getId()));
-		writer.println(String.format("       cx=\"%f\"", circle.getCx()));
-		writer.println(String.format("       cy=\"%f\"", circle.getCy()));
-		writer.println(String.format("       r=\"%f\"", circle.getRadius()));
+		writer.println(format("       style=\"%s\"", style(circle.getStyle())));
+		writer.println(format("       id=\"%s\"", circle.getId()));
+		writer.println(format("       cx=\"%f\"", circle.getCx()));
+		writer.println(format("       cy=\"%f\"", circle.getCy()));
+		writer.println(format("       r=\"%f\"", circle.getRadius()));
 		writer.println("    />");
 	}
 
 	private void writeEllipse(Ellipse ellipse)
 	{
 		writer.println("    <ellipse");
-		writer.println(String.format("       style=\"%s\"",
-				style(ellipse.getStyle())));
-		writer.println(String.format("       id=\"%s\"", ellipse.getId()));
-		writer.println(String.format("       cx=\"%f\"", ellipse.getCx()));
-		writer.println(String.format("       cy=\"%f\"", ellipse.getCy()));
-		writer.println(String.format("       rx=\"%f\"", ellipse.getRadiusX()));
-		writer.println(String.format("       ry=\"%f\"", ellipse.getRadiusY()));
+		writer.println(
+				format("       style=\"%s\"", style(ellipse.getStyle())));
+		writer.println(format("       id=\"%s\"", ellipse.getId()));
+		writer.println(format("       cx=\"%f\"", ellipse.getCx()));
+		writer.println(format("       cy=\"%f\"", ellipse.getCy()));
+		writer.println(format("       rx=\"%f\"", ellipse.getRadiusX()));
+		writer.println(format("       ry=\"%f\"", ellipse.getRadiusY()));
 		writer.println("    />");
 	}
 
@@ -201,17 +202,16 @@ class SvgFileWriter
 			String definition)
 	{
 		writer.println("    <path");
-		writer.println(String.format("       style=\"%s\"", style(style)));
-		writer.println(String.format("       id=\"%s\"", id));
+		writer.println(format("       style=\"%s\"", style(style)));
+		writer.println(format("       id=\"%s\"", id));
 		if (fillRule != null) {
 			if (fillRule == FillRule.NON_ZERO) {
 				// ignore, this is the default value
 			} else if (fillRule == FillRule.EVEN_ODD) {
-				writer.println(
-						String.format("       fill-rule=\"evenodd\"", id));
+				writer.println(format("       fill-rule=\"evenodd\"", id));
 			}
 		}
-		writer.println(String.format("       d=\"%s\"", definition));
+		writer.println(format("       d=\"%s\"", definition));
 		writer.println("    />");
 	}
 
@@ -280,7 +280,7 @@ class SvgFileWriter
 		if (color == null) {
 			return "none";
 		}
-		return String.format("#%06x", color.getValue() & 0xFFFFFF);
+		return format("#%06x", color.getValue() & 0xFFFFFF);
 	}
 
 	private void append(StringBuilder buffer, String name, String value)
@@ -310,8 +310,8 @@ class SvgFileWriter
 			case MOVE:
 				String cmd = element.isRelative() ? "m" : "M";
 				MoveTo move = (MoveTo) element;
-				buffer.append(String.format("%s %f,%f", cmd, move.getX(),
-						move.getY()));
+				buffer.append(
+						format("%s %f,%f", cmd, move.getX(), move.getY()));
 				break;
 			case CLOSE:
 				cmd = element.isRelative() ? "z" : "Z";
@@ -320,19 +320,19 @@ class SvgFileWriter
 			case LINE:
 				cmd = element.isRelative() ? "l" : "L";
 				LineTo line = (LineTo) element;
-				buffer.append(String.format("%s %f,%f", cmd, line.getX(),
-						line.getY()));
+				buffer.append(
+						format("%s %f,%f", cmd, line.getX(), line.getY()));
 				break;
 			case QUAD:
 				cmd = element.isRelative() ? "q" : "Q";
 				QuadTo quad = (QuadTo) element;
-				buffer.append(String.format("%s %f,%f %f,%f", cmd, quad.getCX(),
+				buffer.append(format("%s %f,%f %f,%f", cmd, quad.getCX(),
 						quad.getCY(), quad.getX(), quad.getY()));
 				break;
 			case CUBIC:
 				cmd = element.isRelative() ? "c" : "C";
 				CubicTo cubic = (CubicTo) element;
-				buffer.append(String.format("%s %f,%f %f,%f %f,%f", cmd,
+				buffer.append(format("%s %f,%f %f,%f %f,%f", cmd,
 						cubic.getCX1(), cubic.getCY1(), cubic.getCX2(),
 						cubic.getCY2(), cubic.getX(), cubic.getY()));
 				break;

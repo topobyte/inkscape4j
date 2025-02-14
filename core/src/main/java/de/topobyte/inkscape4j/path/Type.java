@@ -23,6 +23,8 @@ public enum Type {
 	CLOSE,
 	LINE,
 	QUAD,
-	CUBIC
+	SMOOTH_QUAD,
+	CUBIC,
+	SMOOTH_CUBIC
 
 }

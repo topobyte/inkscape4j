@@ -74,6 +74,18 @@ public class PathBuilder
 		return this;
 	}
 
+	public PathBuilder smoothQuad(double x, double y)
+	{
+		elements.add(new SmoothQuadTo(x, y));
+		return this;
+	}
+
+	public PathBuilder smoothQuad(boolean relative, double x, double y)
+	{
+		elements.add(new SmoothQuadTo(relative, x, y));
+		return this;
+	}
+
 	public PathBuilder cubic(double cx1, double cy1, double cx2, double cy2,
 			double x, double y)
 	{
@@ -85,6 +97,19 @@ public class PathBuilder
 			double cx2, double cy2, double x, double y)
 	{
 		elements.add(new CubicTo(relative, cx1, cy1, cx2, cy2, x, y));
+		return this;
+	}
+
+	public PathBuilder smoothCubic(double cx2, double cy2, double x, double y)
+	{
+		elements.add(new SmoothCubicTo(cx2, cy2, x, y));
+		return this;
+	}
+
+	public PathBuilder smoothCubic(boolean relative, double cx2, double cy2,
+			double x, double y)
+	{
+		elements.add(new SmoothCubicTo(relative, cx2, cy2, x, y));
 		return this;
 	}
 

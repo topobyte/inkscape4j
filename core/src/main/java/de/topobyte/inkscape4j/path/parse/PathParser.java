@@ -25,10 +25,14 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CharMatcher;
 
+import de.topobyte.inkscape4j.path.Close;
 import de.topobyte.inkscape4j.path.CubicTo;
 import de.topobyte.inkscape4j.path.LineTo;
 import de.topobyte.inkscape4j.path.MoveTo;
 import de.topobyte.inkscape4j.path.PathElement;
+import de.topobyte.inkscape4j.path.QuadTo;
+import de.topobyte.inkscape4j.path.SmoothCubicTo;
+import de.topobyte.inkscape4j.path.SmoothQuadTo;
 
 public class PathParser
 {
@@ -111,6 +115,34 @@ public class PathParser
 				d = lineTo.remainder;
 				lastCommand = 'H';
 			}
+			// Quadratic
+			else if (c == 'q' || (nextIsNumber && lastCommand == 'q')) {
+				String part = nextIsNumber ? d : d.substring(1);
+				Result<QuadTo> quadTo = parseQ(part, true);
+				result.add(quadTo.thing);
+				d = quadTo.remainder;
+				lastCommand = 'q';
+			} else if (c == 'Q' || (nextIsNumber && lastCommand == 'Q')) {
+				String part = nextIsNumber ? d : d.substring(1);
+				Result<QuadTo> quadTo = parseQ(part, false);
+				result.add(quadTo.thing);
+				d = quadTo.remainder;
+				lastCommand = 'Q';
+			}
+			// Shorthand quadratic
+			else if (c == 't' || (nextIsNumber && lastCommand == 't')) {
+				String part = nextIsNumber ? d : d.substring(1);
+				Result<SmoothQuadTo> quadTo = parseT(part, true);
+				result.add(quadTo.thing);
+				d = quadTo.remainder;
+				lastCommand = 't';
+			} else if (c == 'T' || (nextIsNumber && lastCommand == 'T')) {
+				String part = nextIsNumber ? d : d.substring(1);
+				Result<SmoothQuadTo> quadTo = parseT(part, false);
+				result.add(quadTo.thing);
+				d = quadTo.remainder;
+				lastCommand = 'T';
+			}
 			// Cubic
 			else if (c == 'c' || (nextIsNumber && lastCommand == 'c')) {
 				String part = nextIsNumber ? d : d.substring(1);
@@ -125,8 +157,29 @@ public class PathParser
 				d = cubicTo.remainder;
 				lastCommand = 'C';
 			}
+			// Shorthand cubic
+			else if (c == 's' || (nextIsNumber && lastCommand == 's')) {
+				String part = nextIsNumber ? d : d.substring(1);
+				Result<SmoothCubicTo> cubicTo = parseS(part, true);
+				result.add(cubicTo.thing);
+				d = cubicTo.remainder;
+				lastCommand = 's';
+			} else if (c == 'S' || (nextIsNumber && lastCommand == 'S')) {
+				String part = nextIsNumber ? d : d.substring(1);
+				Result<SmoothCubicTo> cubicTo = parseS(part, false);
+				result.add(cubicTo.thing);
+				d = cubicTo.remainder;
+				lastCommand = 'S';
+			}
+			// Close path
+			else if (c == 'z') {
+				result.add(new Close(true));
+				d = d.substring(1);
+			} else if (c == 'Z') {
+				result.add(new Close());
+				d = d.substring(1);
+			}
 			// Nothing we recognize
-			// TODO: parse close and quadTo commands
 			else {
 				throw new ParsingException(
 						String.format("Don't know what to do with '%c'", c));
@@ -178,10 +231,47 @@ public class PathParser
 		return new Result<>(new LineTo(relative, value, 0), number.remainder);
 	}
 
+	private Result<QuadTo> parseQ(String d, boolean relative)
+			throws ParsingException
+	{
+		logger.debug("Parsing 'q'");
+		String part = skipWhitespace(d);
+		Result<Coordinate> control1 = parseCoordinate(part);
+		part = control1.remainder;
+		part = skipWhitespace(part);
+		Result<Coordinate> coordinate = parseCoordinate(part);
+
+		Coordinate c1 = control1.thing;
+		Coordinate c = coordinate.thing;
+
+		logger.debug("control 1: " + c1);
+		logger.debug("coordinate: " + c);
+
+		part = coordinate.remainder;
+		return new Result<>(new QuadTo(relative, c1.x, c1.y, c.x, c.y),
+				coordinate.remainder);
+	}
+
+	private Result<SmoothQuadTo> parseT(String d, boolean relative)
+			throws ParsingException
+	{
+		logger.debug("Parsing 't'");
+		String part = skipWhitespace(d);
+		Result<Coordinate> coordinate = parseCoordinate(part);
+
+		Coordinate c = coordinate.thing;
+
+		logger.debug("coordinate: " + c);
+
+		part = coordinate.remainder;
+		return new Result<>(new SmoothQuadTo(relative, c.x, c.y),
+				coordinate.remainder);
+	}
+
 	private Result<CubicTo> parseC(String d, boolean relative)
 			throws ParsingException
 	{
-		logger.debug("Parsing 'm'");
+		logger.debug("Parsing 'c'");
 		String part = skipWhitespace(d);
 		Result<Coordinate> control1 = parseCoordinate(part);
 		part = control1.remainder;
@@ -202,6 +292,28 @@ public class PathParser
 		part = coordinate.remainder;
 		return new Result<>(
 				new CubicTo(relative, c1.x, c1.y, c2.x, c2.y, c.x, c.y),
+				coordinate.remainder);
+	}
+
+	private Result<SmoothCubicTo> parseS(String d, boolean relative)
+			throws ParsingException
+	{
+		logger.debug("Parsing 's'");
+		String part = skipWhitespace(d);
+		part = skipWhitespace(part);
+		Result<Coordinate> control2 = parseCoordinate(part);
+		part = control2.remainder;
+		part = skipWhitespace(part);
+		Result<Coordinate> coordinate = parseCoordinate(part);
+
+		Coordinate c2 = control2.thing;
+		Coordinate c = coordinate.thing;
+
+		logger.debug("control 2: " + c2);
+		logger.debug("coordinate: " + c);
+
+		part = coordinate.remainder;
+		return new Result<>(new SmoothCubicTo(relative, c2.x, c2.y, c.x, c.y),
 				coordinate.remainder);
 	}
 
@@ -226,10 +338,9 @@ public class PathParser
 		part = x.remainder;
 		part = skipWhitespace(part);
 		char c = part.charAt(0);
-		if (c != ',') {
-			throw new ParsingException("Expected comma after first coordinate");
+		if (c == ',') {
+			part = part.substring(1);
 		}
-		part = part.substring(1);
 		part = skipWhitespace(part);
 		Result<Double> y = parseNumber(part);
 		return new Result<>(new Coordinate(x.thing, y.thing), y.remainder);
@@ -238,19 +349,54 @@ public class PathParser
 	private Result<Double> parseNumber(String part) throws ParsingException
 	{
 		logger.debug("Parsing number: " + part);
-		int take = 0;
-		for (int i = 0; i < part.length(); i++) {
-			char c = part.charAt(i);
-			if (NUMBER.matches(c)) {
-				take++;
-			} else if (c == 'e') {
-				take++;
+
+		int i = 0;
+		char c = part.charAt(i);
+		// first accept an optional '-'
+		if (c == '-') {
+			i++;
+		}
+		// digits, part before '.'
+		for (int k = i; k < part.length(); k++) {
+			c = part.charAt(k);
+			if (CharMatcher.JAVA_DIGIT.matches(c)) {
+				i++;
 			} else {
 				break;
 			}
 		}
-		String number = part.substring(0, take);
-		String remainder = part.substring(take);
+		// . and add more digits
+		if (c == '.') {
+			i++;
+			for (int k = i; k < part.length(); k++) {
+				c = part.charAt(k);
+				if (CharMatcher.JAVA_DIGIT.matches(c)) {
+					i++;
+				} else {
+					break;
+				}
+			}
+		}
+		// e [+-]? digits
+		if (c == 'e') {
+			i++;
+			c = part.charAt(i);
+			// first accept an optional '-'
+			if (c == '-') {
+				i++;
+			}
+			for (int k = i; k < part.length(); k++) {
+				c = part.charAt(k);
+				if (CharMatcher.JAVA_DIGIT.matches(c)) {
+					i++;
+				} else {
+					break;
+				}
+			}
+		}
+
+		String number = part.substring(0, i);
+		String remainder = part.substring(i);
 		try {
 			double value = Double.parseDouble(number);
 			return new Result<>(value, remainder);

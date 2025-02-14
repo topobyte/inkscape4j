@@ -32,6 +32,8 @@ import de.topobyte.inkscape4j.path.MoveTo;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathElement;
 import de.topobyte.inkscape4j.path.QuadTo;
+import de.topobyte.inkscape4j.path.SmoothCubicTo;
+import de.topobyte.inkscape4j.path.SmoothQuadTo;
 import de.topobyte.inkscape4j.path.StringPath;
 import de.topobyte.inkscape4j.shape.Circle;
 import de.topobyte.inkscape4j.shape.Ellipse;
@@ -329,12 +331,23 @@ class SvgFileWriter
 				buffer.append(format("%s %f,%f %f,%f", cmd, quad.getCX(),
 						quad.getCY(), quad.getX(), quad.getY()));
 				break;
+			case SMOOTH_QUAD:
+				cmd = element.isRelative() ? "t" : "T";
+				SmoothQuadTo sq = (SmoothQuadTo) element;
+				buffer.append(format("%s %f,%f", cmd, sq.getX(), sq.getY()));
+				break;
 			case CUBIC:
 				cmd = element.isRelative() ? "c" : "C";
 				CubicTo cubic = (CubicTo) element;
 				buffer.append(format("%s %f,%f %f,%f %f,%f", cmd,
 						cubic.getCX1(), cubic.getCY1(), cubic.getCX2(),
 						cubic.getCY2(), cubic.getX(), cubic.getY()));
+				break;
+			case SMOOTH_CUBIC:
+				cmd = element.isRelative() ? "c" : "C";
+				SmoothCubicTo sc = (SmoothCubicTo) element;
+				buffer.append(format("%s %f,%f %f,%f", cmd, sc.getCX2(),
+						sc.getCY2(), sc.getX(), sc.getY()));
 				break;
 			}
 		}

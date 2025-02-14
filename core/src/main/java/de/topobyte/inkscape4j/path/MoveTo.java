@@ -17,6 +17,8 @@
 
 package de.topobyte.inkscape4j.path;
 
+import java.util.Objects;
+
 public class MoveTo extends BasePathElement
 {
 
@@ -49,6 +51,33 @@ public class MoveTo extends BasePathElement
 	public double getY()
 	{
 		return y;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(x, y);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		MoveTo other = (MoveTo) obj;
+		return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
+				&& Double.doubleToLongBits(y) == Double
+						.doubleToLongBits(other.y);
 	}
 
 }

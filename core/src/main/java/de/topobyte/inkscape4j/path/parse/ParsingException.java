@@ -1,4 +1,4 @@
-// Copyright 2017 Sebastian Kuerten
+// Copyright 2025 Sebastian Kuerten
 //
 // This file is part of inkscape4j.
 //
@@ -15,46 +15,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with inkscape4j. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.inkscape4j.path;
+package de.topobyte.inkscape4j.path.parse;
 
-public class Close extends BasePathElement
+public class ParsingException extends Exception
 {
 
-	@Override
-	public Type getType()
+	private static final long serialVersionUID = 1L;
+
+	public ParsingException()
 	{
-		return Type.CLOSE;
+		super();
 	}
 
-	public Close()
+	public ParsingException(String message)
 	{
-		this(true);
+		super(message);
 	}
 
-	public Close(boolean isRelative)
+	public ParsingException(Throwable cause)
 	{
-		super(isRelative);
+		super(cause);
 	}
 
-	@Override
-	public int hashCode()
+	public ParsingException(String message, Throwable cause)
 	{
-		return super.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		return true;
+		super(message, cause);
 	}
 
 }

@@ -17,6 +17,8 @@
 
 package de.topobyte.inkscape4j.path;
 
+import java.util.Objects;
+
 public class CubicTo extends BasePathElement
 {
 
@@ -79,6 +81,42 @@ public class CubicTo extends BasePathElement
 	public double getCY2()
 	{
 		return cy2;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(cx1, cx2, cy1, cy2, x, y);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		CubicTo other = (CubicTo) obj;
+		return Double.doubleToLongBits(cx1) == Double
+				.doubleToLongBits(other.cx1)
+				&& Double.doubleToLongBits(cx2) == Double
+						.doubleToLongBits(other.cx2)
+				&& Double.doubleToLongBits(cy1) == Double
+						.doubleToLongBits(other.cy1)
+				&& Double.doubleToLongBits(cy2) == Double
+						.doubleToLongBits(other.cy2)
+				&& Double.doubleToLongBits(x) == Double
+						.doubleToLongBits(other.x)
+				&& Double.doubleToLongBits(y) == Double
+						.doubleToLongBits(other.y);
 	}
 
 }

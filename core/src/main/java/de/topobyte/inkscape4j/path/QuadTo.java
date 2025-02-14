@@ -17,6 +17,8 @@
 
 package de.topobyte.inkscape4j.path;
 
+import java.util.Objects;
+
 public class QuadTo extends BasePathElement
 {
 
@@ -63,6 +65,37 @@ public class QuadTo extends BasePathElement
 	public double getCY()
 	{
 		return cy;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(cx, cy, x, y);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		QuadTo other = (QuadTo) obj;
+		return Double.doubleToLongBits(cx) == Double.doubleToLongBits(other.cx)
+				&& Double.doubleToLongBits(cy) == Double
+						.doubleToLongBits(other.cy)
+				&& Double.doubleToLongBits(x) == Double
+						.doubleToLongBits(other.x)
+				&& Double.doubleToLongBits(y) == Double
+						.doubleToLongBits(other.y);
 	}
 
 }

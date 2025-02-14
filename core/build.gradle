@@ -8,7 +8,19 @@ dependencies {
     api 'de.topobyte:xml4jah-core:0.0.6'
     api 'de.topobyte:xml4jah-dom:0.0.6'
     api 'org.locationtech.jts:jts-core:1.19.0'
+    api 'com.google.guava:guava:19.0'
+
+    api 'org.slf4j:slf4j-api:2.0.16'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.5.16'
 }
+
+test {
+    useJUnitPlatform()
+}
+
 
 def pomInfo = new XmlSlurper().parse(file('info.pom'));
 

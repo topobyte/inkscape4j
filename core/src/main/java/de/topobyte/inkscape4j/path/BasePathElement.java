@@ -17,10 +17,12 @@
 
 package de.topobyte.inkscape4j.path;
 
+import java.util.Objects;
+
 public abstract class BasePathElement implements PathElement
 {
 
-	private boolean isRelative;
+	protected boolean isRelative;
 
 	public BasePathElement(boolean isRelative)
 	{
@@ -37,6 +39,28 @@ public abstract class BasePathElement implements PathElement
 	public void setRelative(boolean isRelative)
 	{
 		this.isRelative = isRelative;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(isRelative);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		BasePathElement other = (BasePathElement) obj;
+		return isRelative == other.isRelative;
 	}
 
 }

@@ -1,4 +1,4 @@
-// Copyright 2017 Sebastian Kuerten
+// Copyright 2025 Sebastian Kuerten
 //
 // This file is part of inkscape4j.
 //
@@ -15,46 +15,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with inkscape4j. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.inkscape4j.path;
+package de.topobyte.inkscape4j.path.parse;
 
-public class Close extends BasePathElement
+public class Coordinate
 {
 
-	@Override
-	public Type getType()
-	{
-		return Type.CLOSE;
-	}
+	double x;
+	double y;
 
-	public Close()
+	public Coordinate(double x, double y)
 	{
-		this(true);
-	}
-
-	public Close(boolean isRelative)
-	{
-		super(isRelative);
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override
-	public int hashCode()
+	public String toString()
 	{
-		return super.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		return true;
+		return String.format("(%f,%f)", x, y);
 	}
 
 }

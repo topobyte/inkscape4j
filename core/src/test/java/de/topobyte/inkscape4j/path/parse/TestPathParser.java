@@ -19,14 +19,24 @@ package de.topobyte.inkscape4j.path.parse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import de.topobyte.inkscape4j.path.FillRule;
 import de.topobyte.inkscape4j.path.Path;
 import de.topobyte.inkscape4j.path.PathBuilder;
 import de.topobyte.inkscape4j.path.PathElement;
+import de.topobyte.inkscape4j.w3c.XmlUtils;
 
 public class TestPathParser
 {
@@ -92,6 +102,55 @@ public class TestPathParser
 		Path expected = pb.build("id", FillRule.EVEN_ODD);
 
 		assertEquals(expected.getElements(), result);
+	}
+
+	@Test
+	public void testBattery() throws ParserConfigurationException, SAXException,
+			IOException, ParsingException
+	{
+		String path = getPath("material/battery.svg");
+
+		PathParser parser = new PathParser();
+		parser.parse(path);
+		List<PathElement> result = parser.getResult();
+		assertEquals(24, result.size());
+	}
+
+	@Test
+	public void testRocket() throws ParserConfigurationException, SAXException,
+			IOException, ParsingException
+	{
+		String path = getPath("material/rocket.svg");
+
+		PathParser parser = new PathParser();
+		parser.parse(path);
+		List<PathElement> result = parser.getResult();
+		assertEquals(72, result.size());
+	}
+
+	@Test
+	public void testShare() throws ParserConfigurationException, SAXException,
+			IOException, ParsingException
+	{
+		String path = getPath("material/share.svg");
+
+		PathParser parser = new PathParser();
+		parser.parse(path);
+		List<PathElement> result = parser.getResult();
+		assertEquals(74, result.size());
+	}
+
+	private static String getPath(String resource)
+			throws ParserConfigurationException, SAXException, IOException
+	{
+		try (InputStream input = Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream(resource)) {
+			Document doc = XmlUtils.parseSvg(input);
+			NodeList paths = doc.getElementsByTagName("path");
+			Node item = paths.item(0);
+			Attr d = (Attr) item.getAttributes().getNamedItem("d");
+			return d.getValue();
+		}
 	}
 
 }
